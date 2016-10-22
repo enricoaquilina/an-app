@@ -1,0 +1,37 @@
+<article class="panel panel-default">
+    <div class="panel-heading">
+        {{user.username}}
+    </div>
+    <div class="panel-body">
+        <label for="email">Email: </label>
+        <p>{{user.email}}</p>        
+
+        <div *ngIf="user.firstName != ''">
+            <label for="firstName">First name: </label>
+            <p>{{user.firstName}}</p>
+        </div>
+        <div *ngIf="user.lastName != ''">
+            <label for="lastName">Last name: </label>
+            <p>{{user.lastName}}</p>
+        </div>
+    </div>
+    <footer class="panel-footer clearfix">
+        <div class="pull-left">
+            <p [innerText]='user.isAdmin == true ? "Administrator" : "Not an Administrator"'>
+        </div>
+        <div class="config pull-right">
+            <a (click)="viewUserProfile()"> View </a>
+            <span>|</span>
+        </div>
+        <div class="config pull-right">
+            <a (click)="followUser()">Follow</a>
+            <span>|</span>
+        </div>
+        <div class="config pull-right">
+            <a (click)="editUser()"> Edit </a>
+            <span>|</span>
+            <a (click)="deleteUser()"> Delete </a>
+            <span>|</span>
+        </div>
+    </footer>
+</article>

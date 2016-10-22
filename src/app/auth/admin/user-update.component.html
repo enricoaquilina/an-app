@@ -1,0 +1,26 @@
+<section class="col-md-8 col-md-offset-2 spacing">
+    <form  [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+        <div class="panel-body">
+            <label for="username">Username</label>
+            <input type="text" ngControl="username" id="username" [ngModel]="user?.username" class="form-control" [formControl]="form.controls['username']" name="username" #input/>
+
+            <label for="email">Email</label>
+            <input type="text" ngControl="email" id="email" [ngModel]="user?.email" class="form-control" [formControl]="form.controls['email']" name="email" #input/>
+        
+            <label for="firstName">First name</label>
+            <input type="text" ngControl="firstName" id="firstName" [ngModel]="user?.firstName" class="form-control" [formControl]="form.controls['firstName']" name="firstName" #input/>
+        
+            <label for="lastName">Last name</label>
+            <input type="text" ngControl="lastName" id="lastName" [ngModel]="user?.lastName" class="form-control" [formControl]="form.controls['lastName']" name="lastName" #input/>
+
+            <label for="admin">Administrator</label>
+            <input type="checkbox" id="admin" [formControl]="form.controls['admin']" [checked]="user?.isAdmin"/>
+        </div>
+        <footer class="panel-footer clearfix">
+            <div class="config pull-right">
+                <button type="submit" class="btn btn-primary" [disabled]="!form.valid">Save</button> 
+                <button type="button" class="btn btn-danger" (click)="onClick()">Cancel</button>
+            </div>
+        </footer>
+    </form>
+</section>

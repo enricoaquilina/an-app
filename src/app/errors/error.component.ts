@@ -3,7 +3,6 @@ import {Error} from './error';
 import {ErrorService} from './error.service';
 
 @Component({
-    moduleId: module.id,
     selector: 'error-component',
     templateUrl: 'error.component.html',
     styles: [`

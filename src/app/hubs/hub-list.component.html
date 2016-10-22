@@ -1,0 +1,4 @@
+<section class="col-ld-8 col-md-offset-2">
+    <h3>Hubs</h3>
+    <hub-area *ngFor="let hub of hubs" [hub]="hub" (editClicked)="message.content=$event"></hub-area> 
+</section>

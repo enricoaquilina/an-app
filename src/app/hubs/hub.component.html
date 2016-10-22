@@ -1,0 +1,27 @@
+<article class="panel panel-default" *ngIf="show">
+    <div class="panel-heading">
+        {{hub.title}}
+    </div>
+    <div class="panel-body">
+        {{hub.description}}
+    </div>
+    <footer class="panel-footer clearfix">
+        <div class="author pull-left">
+            Created by {{hub.ownerUsername}}
+        </div>
+        <div class="config pull-right">
+            <a (click)="viewHub()"> View </a>
+            <span>|</span>
+        </div>
+        <div class="config pull-right " *ngIf="isLoggedIn() && !isOwner()">
+            <a (click)="subscribeHub()"> Subscribe </a>
+            <span>|</span>
+        </div>
+        <div class="config pull-right " *ngIf="isOwner()">
+            <a (click)="editHub()"> Edit </a>
+            <span>|</span>
+            <a (click)="deleteHub()"> Delete </a>
+            <span>|</span>
+        </div>
+    </footer>
+</article>

@@ -9,7 +9,6 @@ import {User} from './auth/user';
     styleUrls: ['app.component.css']
 })
 
-
 export class AppComponent implements OnInit {
     constructor(
         private _authService: AuthService,

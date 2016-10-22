@@ -1,0 +1,8 @@
+<section class="col-ld-8 col-md-offset-2">
+    <h3>Users</h3>
+    <!--<div class="form-group pull-right">
+        <input type="text" placeholder="Search" class="form-control">
+        <button type="text" class="form-control" (click)="searchUser()">Search</button>
+    </div>-->
+    <user-component *ngFor="let user of users" [user]="user"></user-component> 
+</section>
