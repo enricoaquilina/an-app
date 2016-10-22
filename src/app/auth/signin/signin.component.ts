@@ -7,7 +7,6 @@ import {ErrorService} from '../../errors/error.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
-    moduleId: module.id,
     selector: 'signin-component',
     templateUrl: 'signin.component.html'
 })
