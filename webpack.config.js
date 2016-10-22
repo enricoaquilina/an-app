@@ -44,11 +44,7 @@ var config = {
         { 
           test: /\.(html|css)$/, 
           loader: 'raw-loader'
-        },
-        // {
-        //   test: /\.css$/,
-        //   loader: 'style!css'
-        // }
+        }
     ]
   },
   resolve: {
