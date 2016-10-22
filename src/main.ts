@@ -1,4 +1,5 @@
 /// <reference path="../typings.d.ts" />
+import './polyfills';
 
 import 'core-js';
 import 'reflect-metadata';

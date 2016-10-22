@@ -6,7 +6,6 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 import {ROUTING} from './app.routes';
 
-
 import {AppComponent} from './app.component';
 import {HubListComponent} from './hubs/hub-list.component';
 import {HubComponent} from './hubs/hub.component';
@@ -18,8 +17,6 @@ import {HubMessageComponent} from './hubs/hub-messages/hub-message.component';
 import {ProfileUpdateComponent} from './auth/profile/profile-update.component';
 import {SigninComponent} from './auth/signin/signin.component';
 import {SignupComponent} from './auth/signup/signup.component';
-
-
 
 import {AuthService} from './auth/auth.service';
 import {UserService} from './auth/user.service';
