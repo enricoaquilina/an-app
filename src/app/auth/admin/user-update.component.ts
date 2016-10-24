@@ -5,19 +5,19 @@ import {ErrorService} from '../../errors/error.service';
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../auth.service';
+import {AppComponent} from '../../app.component';
 
 @Component({
-    moduleId: module.id,
     selector: 'user-update',
     templateUrl: 'user-update.component.html',
 })
 export class UserUpdateComponent implements OnInit {
     constructor(
-        private _userService: UserService,
-        private _errorService: ErrorService,
-        private _fbld: FormBuilder,
-        private _router: Router,
-        private _authService: AuthService
+        private userService: UserService,
+        private errorService: ErrorService,
+        private fbld: FormBuilder,
+        private router: Router,
+        private authService: AuthService
     ) { }
     user: User = null;
     form: FormGroup;
@@ -26,8 +26,11 @@ export class UserUpdateComponent implements OnInit {
         this.user = null;
     }
     ngOnInit() {
-        this.user = this._userService.user;
-        this.form = this._fbld.group({
+        this.authService.hasSignedIn.subscribe(user => {
+            this.user = user;
+        })
+        // this.user = this.userService.user;
+        this.form = this.fbld.group({
             username: ['', Validators.required],
             email: ['', Validators.required],
             firstName: [''],
@@ -42,9 +45,9 @@ export class UserUpdateComponent implements OnInit {
         this.user.lastName = form.lastName;
         this.user.isAdmin = form.admin;
         
-        this._userService.updateUser(this.user)
+        this.userService.updateUser(this.user)
             .subscribe( data => {
-            this._router.navigate(['/users']);
+            this.router.navigate(['/users']);
         }, function (error) { 
             return this._errorService.handleError(error); 
         });

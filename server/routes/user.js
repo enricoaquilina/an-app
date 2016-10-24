@@ -6,6 +6,7 @@ var token = require('jsonwebtoken');
 
 var User = require('../models/user');
 
+
 router.post('/create', function(req, res, next){
     var user = new User({
         username: req.body.username,
@@ -56,17 +57,19 @@ router.post('/signin', function(req,res,next){
         })
     })
 })
-// router.use('/', function(req, res, next){
-//     token.verify(req.query.token, 'd8f6b7a3-d98d-4f0a-88a2-ff90e26a6e70', function(err, decoded){
-//         if(err){
-//             return res.status(401).json({
-//                 title: 'Not authorized',
-//                 error: err
-//             });
-//         }
-//         next();
-//     })
-// })
+router.use('/', function(req, res, next){
+    if(req.query.token){
+        token.verify(req.query.token, 'd8f6b7a3-d98d-4f0a-88a2-ff90e26a6e70', function(err, decoded){
+            if(err){
+                return res.status(401).json({
+                    title: 'Not authorized',
+                    error: err
+                });
+            }
+            next();
+        })
+    }
+})
 router.post('/', function(req, res, next){
     var decoded = token.decode(req.query.token);
     User.findOne( { _id: req.body.userId }, 

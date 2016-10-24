@@ -16,15 +16,13 @@ export class HubListComponent implements OnInit{
     ) { }
 
     ngOnInit(){
-        // this._hubService.getHubs()
-        //     .subscribe(
-        //         data => {
-                    
-        //             this.hubs = data;
-
-        //             // this._hubService.hubs = this.hubs;
-        //         },
-        //         error => this._errorService.handleError(error)
-        //     );
+        this._hubService.getHubs()
+            .subscribe(
+                data => {      
+                    this.hubs = data;
+                    // this._hubService.hubs = this.hubs;
+                },
+                error => this._errorService.handleError(error)
+            );
     }
 }

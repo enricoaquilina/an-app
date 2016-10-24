@@ -11,29 +11,31 @@ import {User} from './auth/user';
 
 export class AppComponent implements OnInit {
     constructor(
-        private _authService: AuthService,
-        private _errorService: ErrorService
+        private authService: AuthService,
+        private errorService: ErrorService
     ) { }
     user: User = null;
 
     isLoggedIn() {
-        return this._authService.isLoggedIn(); 
+        return this.authService.isLoggedIn(); 
     }
     isAdmin() {
-        return this._authService.user ? this._authService.user.isAdmin : false;
+        return this.authService.user ? this.authService.user.isAdmin : false;
     }
     ngOnInit(){
-        this._authService.hasSignedIn.subscribe(user => {
+        this.authService.hasSignedIn.subscribe(user => {
             this.user = user;
         })
-        if(this.user){
-            this._authService.getUserDetails()
+        //this is in case a refresh happens
+        if(!this.user){
+            this.authService.getUserDetails()
                 .subscribe(
                     data => {
-                        this.user = data.obj;
-                        this._authService.user = this.user;
+                        let user = data;
+                        this.user = user;
+                        this.authService.user = user;
                     },
-                    error => this._errorService.handleError(error)
+                    error => this.errorService.handleError(error)
                 );
         }
     }

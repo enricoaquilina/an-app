@@ -16,25 +16,26 @@ export class SigninComponent implements OnInit{
 
     constructor(
         private _fb: FormBuilder, 
-        private _authService: AuthService,
-        private _router: Router,
-        private _errorService: ErrorService
+        private authService: AuthService,
+        private router: Router,
+        private errorService: ErrorService
     ) { }
 
     onSubmit(){
         var user = new User(this.myForm.value.username, this.myForm.value.password);
-
-        this._authService.signInUser(user)
+        this.myForm.reset();
+  
+        this.authService.signInUser(user)
             .subscribe(
                 data => {
-   	                this._authService.user = data.obj;
+   	                this.authService.user = data.obj;
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('userId', data.userId);
-                    this._authService.updateLoggedUser(user);
+                    this.authService.updateLoggedUser(user);
 
-                    this._router.navigate(['/']);
+                    this.router.navigate(['/']);
                 },
-                error => this._errorService.handleError(error)
+                error => this.errorService.handleError(error)
             );
     }
 

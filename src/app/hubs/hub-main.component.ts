@@ -31,7 +31,6 @@ export class HubMainComponent implements OnInit{
 
     onSubmit(form: FormGroup){       
         this.message = new HubMessage(form.value.content,this._authService.user.username, this._hubService.hub.title);
-        form.reset();
 
         this._hubService.addHubMessage(this.message)
             .subscribe(
@@ -41,6 +40,7 @@ export class HubMainComponent implements OnInit{
                 },
                 error => this._errorService.handleError(error)
             );
+        form.reset();
     }
 
     ngOnInit(){
@@ -55,11 +55,11 @@ export class HubMainComponent implements OnInit{
                     .subscribe(
                         data => {
                             this.hubMessages = data;
-                            console.log(data);
                         },
                         error => this._errorService.handleError(error)
                     );
         });
+        
         this._hubService.newMessage.subscribe(messages => {
             this.hubMessages.push(messages);
         })

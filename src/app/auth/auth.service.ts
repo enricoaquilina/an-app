@@ -6,7 +6,7 @@ import {Observable} from 'rxjs/Rx';
 @Injectable()
 export class AuthService{
     constructor(private _http: Http){}
-    user: User;
+    user: User = null;
     hasSignedIn = new EventEmitter<User>();
 
     addUser(user: User){
@@ -47,9 +47,14 @@ export class AuthService{
         }
         const body = JSON.stringify(identifierObject);
         const headers = new Headers({'Content-Type': 'application/json'})
-
+        
         return this._http.post('http://localhost:3000/user' + token, body, {headers: headers})
-                   .map(response => response.json())
+                   .map(response => {
+                       let user = response.json().obj;
+                    //    this.user = user;
+                       this.updateLoggedUser(user);
+                       return user;
+                   })
                    .catch(error => Observable.throw(error.json()));    
     }
     isLoggedIn(){
@@ -64,7 +69,7 @@ export class AuthService{
     isOwner(userId: string){
         return localStorage.getItem('userId') == userId;
     }
-    updateUser(user: User){
+    // updateUser(user: User){
         
-    }
+    // }
 }

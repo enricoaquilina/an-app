@@ -24,7 +24,6 @@ export class AppValidators {
                 p++;
             }
         }
-        console.log(p);
         if(p>=4){
             return {secure:true};
         }

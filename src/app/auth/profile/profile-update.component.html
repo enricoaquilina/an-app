@@ -1,17 +1,17 @@
 <section class="col-md-8 col-md-offset-2 spacing">
-    <form  [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+    <!--<form  [formGroup]="form" (ngSubmit)="onSubmit(form.value)">-->
         <div class="panel-body">
             <label for="username">Username</label>
-            <input type="text" ngControl="username" id="username" [ngModel]="user?.username" class="form-control" [formControl]="form.controls['username']" name="username" #input/>
+            <input type="text"  id="username" [ngModel]=currentUserProfile?.username class="form-control"  name="username" #input/>
 
             <label for="email">Email</label>
-            <input type="text" ngControl="email" id="email" [ngModel]="user?.email" class="form-control" [formControl]="form.controls['email']" name="email" #input/>
+            <input type="text"  id="email" [ngModel]="currentUserProfile?.email" class="form-control" name="email" #input/>
         
             <label for="firstName">First name</label>
-            <input type="text" ngControl="firstName" id="firstName" [ngModel]="user?.firstName" class="form-control" [formControl]="form.controls['firstName']" name="firstName" #input/>
+            <input type="text" id="firstName" [ngModel]="currentUserProfile?.firstName" class="form-control"  name="firstName" #input/>
         
             <label for="lastName">Last name</label>
-            <input type="text" ngControl="lastName" id="lastName" [ngModel]="user?.lastName" class="form-control" [formControl]="form.controls['lastName']" name="lastName" #input/>
+            <input type="text" id="lastName" [ngModel]="currentUserProfile?.lastName" class="form-control"  name="lastName" #input/>
         </div>
         <footer class="panel-footer clearfix">
             <div class="config pull-right">
@@ -19,5 +19,5 @@
                 <button type="button" class="btn btn-danger" (click)="onClick()">Cancel</button>
             </div>
         </footer>
-    </form>
+    <!--</form>-->
 </section>

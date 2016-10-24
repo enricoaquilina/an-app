@@ -17,6 +17,10 @@ import {HubMessageComponent} from './hubs/hub-messages/hub-message.component';
 import {ProfileUpdateComponent} from './auth/profile/profile-update.component';
 import {SigninComponent} from './auth/signin/signin.component';
 import {SignupComponent} from './auth/signup/signup.component';
+import {LogoutComponent} from './auth/logout/logout.component';
+import {UserListComponent} from './auth/admin/user-list.component';
+import {UserUpdateComponent} from './auth/admin/user-update.component';
+import {UserComponent} from './auth/admin/user.component';
 
 import {AuthService} from './auth/auth.service';
 import {UserService} from './auth/user.service';
@@ -29,7 +33,8 @@ import {HubService} from './hubs/hub.service';
         AppComponent, HubListComponent, HubComponent, 
         HubMainComponent, HubFormComponent, HubUpdateComponent,
         HubMessageComponent, ProfileUpdateComponent, SigninComponent,
-        SignupComponent, ErrorComponent
+        SignupComponent, LogoutComponent, UserListComponent,
+        UserUpdateComponent, UserComponent, ErrorComponent
         // FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES
     ],
     providers: [ AuthService, UserService, HubService,

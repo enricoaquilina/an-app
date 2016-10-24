@@ -2,7 +2,7 @@
     <form  [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
         <div class="panel-body">
             <label for="username">Username</label>
-            <input type="text" ngControl="username" id="username" [ngModel]="user?.username" class="form-control" [formControl]="form.controls['username']" name="username" #input/>
+            <input type="text" ngControl="username" id="username" value={{user?.username}} class="form-control" [formControl]="form.controls['username']" name="username" #input/>
 
             <label for="email">Email</label>
             <input type="text" ngControl="email" id="email" [ngModel]="user?.email" class="form-control" [formControl]="form.controls['email']" name="email" #input/>

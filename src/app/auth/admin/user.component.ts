@@ -5,7 +5,6 @@ import {Component, Input} from '@angular/core';
 import {ErrorService} from '../../errors/error.service';
 
 @Component({
-    moduleId: module.id,
     selector: 'user-component',
     templateUrl: 'user.component.html'
 })
