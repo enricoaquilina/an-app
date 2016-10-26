@@ -2,6 +2,7 @@ import {Injectable,EventEmitter} from '@angular/core';
 import {User} from './user';
 import {Http, Headers} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
+import {Hub} from '../hubs/hub';
 
 @Injectable()
 export class AuthService{
@@ -68,10 +69,13 @@ export class AuthService{
     isAdmin(){
         return this.user? this.user.isAdmin: false;
     }
+    isHubOwner(hub: Hub) {
+        console.log('here in the auth service');
+        console.log(hub.ownerUsername);
+        console.log(this.user.username);
+        return hub.ownerUsername === this.user.username;
+    }
     isOwner(userId: string){
         return localStorage.getItem('userId') == userId;
     }
-    // updateUser(user: User){
-        
-    // }
 }

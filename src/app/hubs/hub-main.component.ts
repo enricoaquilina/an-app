@@ -30,24 +30,20 @@ export class HubMainComponent implements OnInit{
 
 
     onSubmit(form: FormGroup){       
-        // this.message = new HubMessage(form.value.content,this.authService.user.username, this.hubService.hub.title);
-        console.log(form.value.content);
-        console.log(this.authService.getCurrUser());
-        console.log(this.hubService.hub);
-        return false;
-        // this.hubService.addHubMessage(this.message)
-        //     .subscribe(
-        //         data => {
-        //             this.hubService.newMessage.emit(data);
-        //             this.router.navigate['/h/' + this.hubService.hub.title];
-        //         },
-        //         error => this.errorService.handleError(error)
-        //     );
-        // form.reset();
+        this.message = new HubMessage(form.value.content,this.authService.user.username, this.hubService.hub.title);
+        this.hubService.addHubMessage(this.message)
+            .subscribe(
+                data => {
+                    this.hubService.newMessage.emit(data);
+                    this.router.navigate['/h/' + this.hubService.hub.title];
+                },
+                error => this.errorService.handleError(error)
+            );
+        form.reset();
     }
 
     ngOnInit(){
-            console.log(this.hubService.hub);
+
         this.sub = this.route
             .params
             .subscribe(params => {
@@ -74,7 +70,7 @@ export class HubMainComponent implements OnInit{
     isLoggedIn(){
         return this.authService.isLoggedIn();
     }
-    goBack(): void {
+    goBack() {
         window.history.back();
     }
 }

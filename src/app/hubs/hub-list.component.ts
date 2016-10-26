@@ -8,21 +8,24 @@ import {ErrorService} from '../errors/error.service';
     templateUrl: 'hub-list.component.html'
 })
 export class HubListComponent implements OnInit{
-    hubs: Hub[];
+    hubs: Hub[] = null;
 
     constructor(
-        private _hubService: HubService,
-        private _errorService: ErrorService
+        private hubService: HubService,
+        private errorService: ErrorService
     ) { }
 
     ngOnInit(){
-        this._hubService.getHubs()
+        this.hubService.currentlyDisplayedHubs.subscribe(hubs => {
+            this.hubs = hubs;
+        })
+        this.hubService.getHubs()
             .subscribe(
-                data => {      
+                data => {
                     this.hubs = data;
-                    // this._hubService.hubs = this.hubs;
+                    this.hubService.setCurrentlyDisplayedHubs(data);
                 },
-                error => this._errorService.handleError(error)
+                error => this.errorService.handleError(error)
             );
     }
 }

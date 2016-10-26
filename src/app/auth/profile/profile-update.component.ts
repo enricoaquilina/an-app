@@ -23,8 +23,8 @@ export class ProfileUpdateComponent implements OnInit {
     user: User;
     form: FormGroup;
 
-    onClick() {
-        this.user = null;
+    goBack() {
+        window.history.back();
     }
     ngOnInit() {
         this.authService.hasSignedIn.subscribe(user => {

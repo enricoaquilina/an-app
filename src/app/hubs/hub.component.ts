@@ -30,17 +30,18 @@ export class HubComponent{
     deleteHub(){
         this.hubService.deleteHub(this.hub)
             .subscribe(
-                data => this.router.navigate(['/']),
+                data => {
+                    this.router.navigate(['/']);
+                },
                 error => this.errorService.handleError(error)
             );
     }
     viewHub(){
         this.router.navigate(['/h', this.hub.title]);
         this.hubService.setHub(this.hub);
-        // this._hubService.hubViewEvt.emit(this.hub);
     }
     subscribeHub(){
-
+        //TODO
     }
     isOwner(){
         return this.authService.isOwner(this.hub.ownerId);

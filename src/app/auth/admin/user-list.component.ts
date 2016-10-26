@@ -13,27 +13,27 @@ export class UserListComponent implements OnInit{
     users: User[];
     
     constructor(
-        private _errorService: ErrorService,
-        private _userService: UserService,
-        private _router: Router,
-        private _authService: AuthService
+        private errorService: ErrorService,
+        private userService: UserService,
+        private router: Router,
+        private authService: AuthService
     ) { }
 
     ngOnInit() {
-        const isAdmin: boolean = this._authService.isAdmin();
+        const isAdmin: boolean = this.authService.isAdmin();
         
         if(!isAdmin){
-            this._router.navigate(['/']);
+            this.router.navigate(['/']);
             return;
         }
-        this._userService.getUsers()
+        this.userService.getUsers()
             .subscribe(
                 data => {
                     this.users = data;
                 },
                 error => {
-                    this._router.navigate(['/']);
-                    this._errorService.handleError(error);
+                    this.router.navigate(['/']);
+                    this.errorService.handleError(error);
                 }
             );
     }

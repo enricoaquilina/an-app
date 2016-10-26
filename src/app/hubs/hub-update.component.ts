@@ -13,39 +13,44 @@ import {Router} from '@angular/router';
 
 export class HubUpdateComponent implements OnInit{
     constructor(
-        private _hubService: HubService,
-        private _errorService: ErrorService,
-        private _authService: AuthService,
-        private _fbld: FormBuilder,
-        private _router: Router
+        private hubService: HubService,
+        private errorService: ErrorService,
+        private authService: AuthService,
+        private fbld: FormBuilder,
+        private router: Router
     ) { }
     hub: Hub = null;
     form: FormGroup;
 
-    onClick() {
-        this.hub = null;
-    };
-
     ngOnInit() {
-        this.hub = this._hubService.hub;
-        this.form = this._fbld.group({
+        this.form = this.fbld.group({
             title: ['', Validators.required],
             description: ['', Validators.required]
         });
+        if(!this.hub && 
+            this.authService.isHubOwner(this.hub)) {
+            this.router.navigate(['/']);
+            return;
+        }
+        this.hub = this.hubService.getHub();
     };
 
     isLoggedIn() {
-        return this._authService.isLoggedIn();
+        return this.authService.isLoggedIn();
     };
 
     onSubmit(form: any) {
         this.hub.title = form.title;
         this.hub.description = form.description;
-        this._hubService.updateHub(this.hub)
+        this.hubService.updateHub(this.hub)
             .subscribe( data => {
-            this._router.navigate(['/']);
+            this.router.navigate(['/']);
         }, function (error) { 
             return this._errorService.handleError(error); 
         });
     };
+
+    goBack() {
+        window.history.back();
+    }
 }

@@ -23,7 +23,7 @@ export class HubFormComponent implements OnInit{
     hub: Hub = null;
 
     onSubmit(form: any){        
-        const hub: Hub = new Hub(form.title, form.description);
+        const hub: Hub = new Hub(form.title.trim(), form.description);
         this._hubService.addHub(hub)
             .subscribe(
                 data => {
@@ -48,5 +48,7 @@ export class HubFormComponent implements OnInit{
     isLoggedIn(){
         return this._authService.isLoggedIn();
     }
-
+    goBack() {
+        window.history.back();
+    }
 }

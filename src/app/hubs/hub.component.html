@@ -10,18 +10,14 @@
             Created by {{hub.ownerUsername}}
         </div>
         <div class="config pull-right">
-            <a (click)="viewHub()"> View </a>
-            <!--<span>|</span>-->
+            <button type="button" (click)="viewHub()" class="btn btn-primary">View</button> 
         </div>
-        <div class="config pull-right " *ngIf="isLoggedIn() && !isOwner()">
+        <div *ngIf="isLoggedIn() && !isOwner()">
             <a (click)="subscribeHub()"> Subscribe </a>
-            <span>|</span>
         </div>
-        <div class="config pull-right " *ngIf="isOwner()">
-            <a (click)="editHub()"> Edit </a>
-            <span>|</span>
-            <a (click)="deleteHub()"> Delete </a>
-            <span>|</span>
+        <div *ngIf="isOwner()">
+            <button type="button" (click)="editHub()" class="btn btn-warning">Edit</button> 
+            <button type="button" (click)="deleteHub()" class="btn btn-danger">Delete</button> 
         </div>
     </footer>
 </article>
