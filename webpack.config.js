@@ -42,7 +42,7 @@ var config = {
           exclude: [nodeModulesPath]
         },
         { 
-          test: /\.(html|css)$/, 
+          test: /\.(html|css|scss)$/, 
           loader: 'raw-loader'
         }
     ]

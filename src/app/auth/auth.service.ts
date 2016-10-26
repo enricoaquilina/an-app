@@ -24,6 +24,12 @@ export class AuthService{
     //         .map(response => response.json())
     //         .catch(error => Observable.throw(error.json()));        
     // }
+    getCurrUser() {
+        return this.user;
+    }
+    setCurrUser(user: User) {
+        this.user = user;
+    }
     signInUser(user: User){
         const body = JSON.stringify(user);
         const headers = new Headers({'Content-Type': 'application/json'})
@@ -51,8 +57,7 @@ export class AuthService{
         return this._http.post('http://localhost:3000/user' + token, body, {headers: headers})
                    .map(response => {
                        let user = response.json().obj;
-                    //    this.user = user;
-                       this.updateLoggedUser(user);
+                       this.hasSignedIn.emit(user);
                        return user;
                    })
                    .catch(error => Observable.throw(error.json()));    
@@ -62,9 +67,6 @@ export class AuthService{
     }
     isAdmin(){
         return this.user? this.user.isAdmin: false;
-    }
-    updateLoggedUser(user: User){
-        this.hasSignedIn.emit(user);
     }
     isOwner(userId: string){
         return localStorage.getItem('userId') == userId;

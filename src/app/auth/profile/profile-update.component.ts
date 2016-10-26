@@ -20,19 +20,19 @@ export class ProfileUpdateComponent implements OnInit {
         private authService: AuthService
 
     ) { }
-    currentUserProfile: User;
+    user: User;
     form: FormGroup;
 
     onClick() {
-        this.currentUserProfile = null;
+        this.user = null;
     }
     ngOnInit() {
         this.authService.hasSignedIn.subscribe(user => {
-            if(user.obj)
-                this.currentUserProfile = user.obj;
+            // if(user)
+            this.user = user;
         })
 
-        this.currentUserProfile = this.authService.user;
+        this.user = this.authService.getCurrUser();
         this.form = this.fbld.group({
             username: ['', Validators.required],
             email: ['', Validators.required],
@@ -41,12 +41,12 @@ export class ProfileUpdateComponent implements OnInit {
         });
     };
     onSubmit(form: any) {
-        this.currentUserProfile.username = form.username;
-        this.currentUserProfile.email = form.email;
-        this.currentUserProfile.firstName = form.firstName;
-        this.currentUserProfile.lastName = form.lastName;
+        this.user.username = form.username;
+        this.user.email = form.email;
+        this.user.firstName = form.firstName;
+        this.user.lastName = form.lastName;
 
-        this.userService.updateUser(this.currentUserProfile)
+        this.userService.updateUser(this.user)
             .subscribe( data => {
             this.authService.hasSignedIn.emit(data.obj);
             this.router.navigate(['/']);

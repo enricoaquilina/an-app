@@ -63,6 +63,12 @@ export class HubService {
         })
         .catch(function (error) { return Observable.throw(error.json()); });
     };
+    setHub(hub: Hub) {
+        this.hub = hub;
+    }
+    getHub() {
+        return this.hub;
+    }
     getHubMessages(hubTitle) {
         return this._http.get('http://localhost:3000/message/' + hubTitle.title)
             .map(function (response) {

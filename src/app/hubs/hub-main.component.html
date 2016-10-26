@@ -5,8 +5,7 @@
     <div class="panel-body">
         <!--{{hub.description}}-->
         <hub-message *ngFor="let message of hubMessages" [message]="message"></hub-message>
-        <form (ngSubmit)="onSubmit(messageForm)" #messageForm="ngForm">
-            <!--[formGroup]="form" (ngSubmit)="onSubmit(form.value)"-->
+        <form *ngIf="isLoggedIn()" (ngSubmit)="onSubmit(messageForm)" #messageForm="ngForm">
             <input type="text" id="content" class="form-control" ngModel name="content" #message="ngModel" required/>
             <button type="submit" class="btn btn-primary">Send</button>  
         </form>
@@ -16,18 +15,14 @@
             <!--Created by {{hub.ownerUsername}}-->
         </div>
         <div class="config pull-right">
-            <a (click)="viewHub()"> View </a>
-            <span>|</span>
+            <!--<a (click)="viewHub()"> View </a>-->
         </div>
         <div class="config pull-right">
             <!--<a (click)="subscribeHub()"> Subscribe </a>-->
-            <span>|</span>
         </div>
         <div class="config pull-right">
-            <!--<a (click)="editHub()"> Edit </a>-->
-            <span>|</span>
+            <!--<a (click)="editHub()"> Edit </a>-->            
             <!--<a (click)="deleteHub()"> Delete </a>-->
-            <span>|</span>
         </div>
     </footer>
 </article>

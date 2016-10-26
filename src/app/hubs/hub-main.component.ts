@@ -17,33 +17,37 @@ export class HubMainComponent implements OnInit{
     hubMessages: HubMessage[] = [];
     private sub: Subscription;
     form: FormGroup;
-    message: HubMessage;
+    message: HubMessage = null;
 
     constructor(
-        private _hubService: HubService,
-        private _errorService: ErrorService,
-        private _authService: AuthService,
-        private _fbld: FormBuilder,
-        private _router: Router,
+        private hubService: HubService,
+        private errorService: ErrorService,
+        private authService: AuthService,
+        private fbld: FormBuilder,
+        private router: Router,
         private route: ActivatedRoute
     ) { }
 
 
     onSubmit(form: FormGroup){       
-        this.message = new HubMessage(form.value.content,this._authService.user.username, this._hubService.hub.title);
-
-        this._hubService.addHubMessage(this.message)
-            .subscribe(
-                data => {
-                    this._hubService.newMessage.emit(data);
-                    this._router.navigate['/h/' + this._hubService.hub.title];
-                },
-                error => this._errorService.handleError(error)
-            );
-        form.reset();
+        // this.message = new HubMessage(form.value.content,this.authService.user.username, this.hubService.hub.title);
+        console.log(form.value.content);
+        console.log(this.authService.getCurrUser());
+        console.log(this.hubService.hub);
+        return false;
+        // this.hubService.addHubMessage(this.message)
+        //     .subscribe(
+        //         data => {
+        //             this.hubService.newMessage.emit(data);
+        //             this.router.navigate['/h/' + this.hubService.hub.title];
+        //         },
+        //         error => this.errorService.handleError(error)
+        //     );
+        // form.reset();
     }
 
     ngOnInit(){
+            console.log(this.hubService.hub);
         this.sub = this.route
             .params
             .subscribe(params => {
@@ -51,24 +55,24 @@ export class HubMainComponent implements OnInit{
                 var obj = {
                     title: title
                 }
-                this._hubService.getHubMessages(obj)
+                this.hubService.getHubMessages(obj)
                     .subscribe(
                         data => {
                             this.hubMessages = data;
                         },
-                        error => this._errorService.handleError(error)
+                        error => this.errorService.handleError(error)
                     );
         });
         
-        this._hubService.newMessage.subscribe(messages => {
+        this.hubService.newMessage.subscribe(messages => {
             this.hubMessages.push(messages);
         })
-        this.form = this._fbld.group({
+        this.form = this.fbld.group({
             content: ['', [<any>Validators.required]],
         });
     }
     isLoggedIn(){
-        // return this._authService.isLoggedIn();
+        return this.authService.isLoggedIn();
     }
     goBack(): void {
         window.history.back();

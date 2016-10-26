@@ -3,6 +3,7 @@ import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {LocationStrategy, HashLocationStrategy} from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { MaterialModule } from '@angular/material';
 
 import {ROUTING} from './app.routes';
 
@@ -28,7 +29,10 @@ import {ErrorService} from './errors/error.service';
 import {HubService} from './hubs/hub.service';
 
 @NgModule({
-    imports: [BrowserModule, HttpModule, FormsModule, ReactiveFormsModule, ROUTING],
+    imports: [
+        BrowserModule, HttpModule, MaterialModule.forRoot(), 
+        FormsModule, ReactiveFormsModule, ROUTING
+    ],
     declarations: [
         AppComponent, HubListComponent, HubComponent, 
         HubMainComponent, HubFormComponent, HubUpdateComponent,

@@ -15,37 +15,37 @@ export class HubComponent{
     @Output() editClicked = new EventEmitter<Hub>();
 
     constructor(
-        private _hubService: HubService, 
-        private _authService: AuthService, 
-        private _errorService: ErrorService,
-        private _router: Router
+        private hubService: HubService, 
+        private authService: AuthService, 
+        private errorService: ErrorService,
+        private router: Router
     ){};
 
     color = 'white';
     show = true;
+
     editHub(){
-        this._hubService.editHub(this.hub);
+        this.hubService.editHub(this.hub);
     }
     deleteHub(){
-        this._hubService.deleteHub(this.hub)
+        this.hubService.deleteHub(this.hub)
             .subscribe(
-                data => this._router.navigate(['/']),
-                error => this._errorService.handleError(error)
+                data => this.router.navigate(['/']),
+                error => this.errorService.handleError(error)
             );
     }
     viewHub(){
-        // this._router.navigateByUrl('/h/title'+this.hub.title);
-        this._router.navigate(['/h', this.hub.title]);
-        this._hubService.hub = this.hub;
+        this.router.navigate(['/h', this.hub.title]);
+        this.hubService.setHub(this.hub);
         // this._hubService.hubViewEvt.emit(this.hub);
     }
     subscribeHub(){
 
     }
     isOwner(){
-        return this._authService.isOwner(this.hub.ownerId);
+        return this.authService.isOwner(this.hub.ownerId);
     }
     isLoggedIn(){
-        return this._authService.isLoggedIn();
+        return this.authService.isLoggedIn();
     }
 }

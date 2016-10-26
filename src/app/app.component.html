@@ -16,6 +16,10 @@
             <li role="presentation"><a [routerLink]="['/users']" *ngIf="isAdmin()">Users</a></li>
             <li role="presentation"><a [routerLink]="['/logout']" *ngIf="isLoggedIn()">Log out</a></li>
         </ul>
+        <button md-raised-button color="primary">PRIMARY</button>
+        <button md-raised-button color="accent">ACCENT</button>
+        <button md-raised-button color="warn">WARN</button>
+
         <router-outlet></router-outlet>
     </div>
     <error-component></error-component>

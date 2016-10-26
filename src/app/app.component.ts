@@ -33,7 +33,8 @@ export class AppComponent implements OnInit {
                     data => {
                         let user = data;
                         this.user = user;
-                        this.authService.user = user;
+                        this.authService.setCurrUser(user);
+                        this.authService.hasSignedIn.emit(user);                
                     },
                     error => this.errorService.handleError(error)
                 );
