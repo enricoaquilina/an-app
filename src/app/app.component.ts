@@ -26,18 +26,12 @@ export class AppComponent implements OnInit {
         this.authService.hasSignedIn.subscribe(user => {
             this.user = user;
         })
-        //this is in case a refresh happens
-        if(!this.user){
-            this.authService.getUserDetails()
-                .subscribe(
-                    data => {
-                        let user = data;
-                        this.user = user;
-                        this.authService.setCurrUser(user);
-                        this.authService.hasSignedIn.emit(user);                
-                    },
-                    error => this.errorService.handleError(error)
-                );
+        //this is in case a refresh happens  
+        var storedUserData = JSON.parse(localStorage.getItem('user')); 
+        if(storedUserData && !this.user ) {
+           this.user = storedUserData;
+           this.authService.setCurrUser(storedUserData);
+           this.authService.hasSignedIn.emit(storedUserData);            
         }
     }
 }

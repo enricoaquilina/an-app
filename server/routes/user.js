@@ -53,7 +53,7 @@ router.post('/signin', function(req,res,next){
             message: 'Success!',
             token: token,
             userId: doc._id,
-            obj: doc
+            obj: JSON.stringify(doc)
         })
     })
 })

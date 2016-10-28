@@ -90,7 +90,6 @@ export class HubService {
         var token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
         this.hubs.splice(this.hubs.indexOf(hub), 1);
         this.currentlyDisplayedHubs.emit(this.hubs);
-        console.log(this.hubs);
 
         return this._http.delete('http://localhost:3000/hub/' + hub.hubId + token)
             .map(function (response) { response.json() })

@@ -3,11 +3,13 @@ import {User} from './user';
 import {Http, Headers} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 import {Hub} from '../hubs/hub';
+import {HubService} from '../hubs/hub.service';
 
 @Injectable()
 export class AuthService{
-    constructor(private _http: Http){}
-    user: User = null;
+    constructor(private _http: Http,
+                private hubService: HubService){}
+    user: User;
     hasSignedIn = new EventEmitter<User>();
 
     addUser(user: User){
@@ -41,14 +43,15 @@ export class AuthService{
             .catch(error => Observable.throw(error.json()));
     }
     logout(){
-        this.user = null;
+        this.setCurrUser(null);
+        this.hubService.setHub(null);
         this.hasSignedIn.emit(this.user);
         localStorage.clear();
     }
     getUserDetails(){
         //get user details again after refresh using his id
         var token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
-        var userId = localStorage.getItem('userId') ? localStorage.getItem('userId') : '';
+        var userId = JSON.parse(localStorage.getItem('user'))._id ? JSON.parse(localStorage.getItem('user'))._id : '';
         var identifierObject = {
             userId: userId
         }
@@ -69,13 +72,11 @@ export class AuthService{
     isAdmin(){
         return this.user? this.user.isAdmin: false;
     }
-    isHubOwner(hub: Hub) {
-        console.log('here in the auth service');
-        console.log(hub.ownerUsername);
-        console.log(this.user.username);
-        return hub.ownerUsername === this.user.username;
+    isHubOwner(hub: Hub) {       
+        let test = hub.ownerUsername === JSON.parse(localStorage.getItem('user')).username;
+        return test;
     }
     isOwner(userId: string){
-        return localStorage.getItem('userId') == userId;
+        return JSON.parse(localStorage.getItem('user'))._id == userId;
     }
 }

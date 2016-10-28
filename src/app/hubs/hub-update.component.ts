@@ -27,12 +27,12 @@ export class HubUpdateComponent implements OnInit{
             title: ['', Validators.required],
             description: ['', Validators.required]
         });
-        if(!this.hub && 
-            this.authService.isHubOwner(this.hub)) {
+        this.hub = this.hubService.getHub() ? this.hubService.getHub() : null;
+
+        if( !this.authService.isHubOwner(this.hub)) {
             this.router.navigate(['/']);
-            return;
+            return false;
         }
-        this.hub = this.hubService.getHub();
     };
 
     isLoggedIn() {

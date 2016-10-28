@@ -30,9 +30,9 @@ export class SigninComponent implements OnInit{
                 data => {
    	                this.authService.setCurrUser(data.obj);
                     this.authService.hasSignedIn.emit(user);
-                    
+
                     localStorage.setItem('token', data.token);
-                    localStorage.setItem('userId', data.userId);
+                    localStorage.setItem('user', data.obj);
                     this.router.navigate(['/']);
                 },
                 error => this.errorService.handleError(error)
