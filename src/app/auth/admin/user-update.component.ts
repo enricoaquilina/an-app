@@ -22,14 +22,12 @@ export class UserUpdateComponent implements OnInit {
     user: User = null;
     form: FormGroup;
 
-    onClick() {
-        this.user = null;
+    goBack() {
+        window.history.back();
     }
     ngOnInit() {
-        this.authService.hasSignedIn.subscribe(user => {
-            this.user = user;
-        })
-        // this.user = this.userService.user;
+        this.user = this.userService.getUser();
+
         this.form = this.fbld.group({
             username: ['', Validators.required],
             email: ['', Validators.required],
@@ -37,6 +35,11 @@ export class UserUpdateComponent implements OnInit {
             lastName: [''],
             admin: ['']
         });
+
+        if(!this.user && !this.authService.getCurrUser().isAdmin) {
+            this.router.navigate(['/']);
+            return false;
+        }
     };
     onSubmit(form: any) {
         this.user.username = form.username;
@@ -46,11 +49,11 @@ export class UserUpdateComponent implements OnInit {
         this.user.isAdmin = form.admin;
         
         this.userService.updateUser(this.user)
-            .subscribe( data => {
-            this.router.navigate(['/users']);
-        }, function (error) { 
-            return this._errorService.handleError(error); 
-        });
+            .subscribe( 
+                data => {
+                    this.router.navigate(['/users']);
+                }, 
+                error => this.errorService.handleError(error)
+            );
     };
-
 }

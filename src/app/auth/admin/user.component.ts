@@ -12,9 +12,9 @@ export class UserComponent {
    @Input() user: User;
   
     constructor(
-        private _userService: UserService,
-        private _router: Router,
-        private _errorService: ErrorService
+        private userService: UserService,
+        private router: Router,
+        private errorService: ErrorService
     ) { }
 
     viewUserProfile(){
@@ -24,13 +24,14 @@ export class UserComponent {
 
     }
     editUser(){
-        this._userService.editUser(this.user);
+        this.userService.setUser(this.user);
+        this.router.navigate(['/user/update']);
     }
     deleteUser(){
-        this._userService.deleteUser(this.user)
+        this.userService.deleteUser(this.user)
             .subscribe(
-                data => this._router.navigate(['/']),
-                error => this._errorService.handleError(error)
+                data => this.router.navigate(['/']),
+                error => this.errorService.handleError(error)
             );
     }
 }

@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, EventEmitter} from '@angular/core';
 import {User} from './user';
 import {Http, Headers} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
@@ -7,11 +7,13 @@ import {Router} from '@angular/router';
 @Injectable()
 export class UserService {
     user: User = null;
+    userToUpdate = new EventEmitter<User>();
 
     constructor(
         private _http: Http,
         private _router: Router
     ) { }
+
     getUsers() {
         var token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
         return this._http.get('http://localhost:3000/user' + token)
@@ -36,9 +38,11 @@ export class UserService {
             .map(function (response) { return response.json(); })
             .catch(function (error) { return Observable.throw(error.json()); });
     }
-    editUser(userToUpdate) {
+    setUser(userToUpdate: User) {
         this.user = userToUpdate;
-        this._router.navigate(['/user/update']);
+    }
+    getUser() {
+        return this.user;
     }
     updateUser(user){
         var body = JSON.stringify(user);

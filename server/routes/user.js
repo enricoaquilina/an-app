@@ -57,8 +57,8 @@ router.post('/signin', function(req,res,next){
         })
     })
 })
-router.use('/', function(req, res, next){
-    if(req.query.token){
+router.use('/', function(req, res, next) {
+    if(req.query.token) {
         token.verify(req.query.token, 'd8f6b7a3-d98d-4f0a-88a2-ff90e26a6e70', function(err, decoded){
             if(err){
                 return res.status(401).json({
@@ -160,44 +160,43 @@ router.get('/:username', function(req, res, next){
 })
 router.patch('/:id', function(req, res, next){
     var decoded = token.decode(req.query.token);
-
         User.findById(req.params.id, function(err, doc){
-        if(err) {
-            return res.status(404).json({
-                title: 'An error occurred',
-                error: err
-            });
-        }
-        if(!doc) {
-            return res.status(404).json({
-                title: 'The user was not found!',
-                error: err
-            });
-        }
-        if(decoded.user._id != doc._id && !decoded.user.isAdmin){
-            return res.status(401).json({
-                title: 'You are not authorized to update the user\'s details!',
-                error: err
-            });
-        }
-        doc.username = req.body.username;
-        doc.email = req.body.email;
-        doc.firstName = req.body.firstName;
-        doc.lastName = req.body.lastName;
-        // doc.isAdmin = false;
-
-        doc.save(function(err, doc){
-            if(err){
+            if(err) {
                 return res.status(404).json({
-                    title: 'Not found!',
+                    title: 'An error occurred',
                     error: err
                 });
             }
-            res.status(200).json({
-                message: 'User saved successfully',
-                obj: doc
+            if(!doc) {
+                return res.status(404).json({
+                    title: 'The user was not found!',
+                    error: err
+                });
+            }
+            if(decoded.user._id != doc._id && !decoded.user.isAdmin){
+                return res.status(401).json({
+                    title: 'You are not authorized to update the user\'s details!',
+                    error: {message: 'You are not authorized'}
+                });
+            }
+            doc.username = req.body.username;
+            doc.email = req.body.email;
+            doc.firstName = req.body.firstName;
+            doc.lastName = req.body.lastName;
+            doc.isAdmin = req.body.isAdmin;
+
+            doc.save(function(err, doc){
+                if(err){
+                    return res.status(404).json({
+                        title: 'Not found!',
+                        error: err
+                    });
+                }
+                res.status(200).json({
+                    message: 'User saved successfully',
+                    obj: doc
+                })
             })
-        })
     });
 })
 router.delete('/:username', function(req, res, next){

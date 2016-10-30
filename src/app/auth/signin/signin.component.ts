@@ -22,13 +22,13 @@ export class SigninComponent implements OnInit{
     ) { }
 
     onSubmit(){
-        var user = new User(this.myForm.value.username, this.myForm.value.password);
+        var user = new User(this.myForm.value.username.toLowerCase(), this.myForm.value.password);
         this.myForm.reset();
   
         this.authService.signInUser(user)
             .subscribe(
                 data => {
-   	                this.authService.setCurrUser(data.obj);
+   	                this.authService.setCurrUser(JSON.parse(data.obj));
                     this.authService.hasSignedIn.emit(user);
 
                     localStorage.setItem('token', data.token);

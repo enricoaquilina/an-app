@@ -16,22 +16,18 @@
         </div>
     </div>
     <footer class="panel-footer clearfix">
-        <div class="pull-left">
-            <p [innerText]='user.isAdmin == true ? "Administrator" : "Not an Administrator"'>
+        <div class="pull-left col-lg-12">
+            <p [innerText]='user.isAdmin ? "Admin" : "Not an Admin"'>
         </div>
-        <div class="config pull-right">
-            <a (click)="viewUserProfile()"> View </a>
-            <span>|</span>
-        </div>
-        <div class="config pull-right">
-            <a (click)="followUser()">Follow</a>
-            <span>|</span>
-        </div>
-        <div class="config pull-right">
-            <a (click)="editUser()"> Edit </a>
-            <span>|</span>
-            <a (click)="deleteUser()"> Delete </a>
-            <span>|</span>
+        <div>
+            <div class="pull-left">
+                <a (click)="viewUserProfile()" class="btn btn-default"> View </a>
+                <a (click)="followUser()">Follow</a>
+            </div>
+            <div class="config pull-right">
+                <a (click)="editUser()" class="btn btn-warning"> Edit </a>
+                <a (click)="deleteUser()" class="btn btn-danger"> Delete </a>
+            </div>
         </div>
     </footer>
 </article>

@@ -31,7 +31,6 @@ export class ProfileUpdateComponent implements OnInit {
             // if(user)
             this.user = user;
         })
-
         this.user = this.authService.getCurrUser();
         this.form = this.fbld.group({
             username: ['', Validators.required],
