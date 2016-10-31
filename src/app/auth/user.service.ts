@@ -7,8 +7,11 @@ import {Router} from '@angular/router';
 @Injectable()
 export class UserService {
     user: User = null;
-    userToUpdate = new EventEmitter<User>();
+    users: User[] = [];
 
+    userToUpdate = new EventEmitter<User>();
+    currentlyDisplayedUsers = new EventEmitter<User[]>();
+    
     constructor(
         private _http: Http,
         private _router: Router
@@ -31,18 +34,14 @@ export class UserService {
         })
         .catch(function (error) { return Observable.throw(error.json()); });
     };
-    deleteUser(user) {
+    deleteUser(user: User) {
         var token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
-         // this.messages.splice(this.messages.indexOf(message), 1);
+        this.users.splice(this.users.indexOf(user), 1);
+        this.currentlyDisplayedUsers.emit(this.users);
+
         return this._http.delete('http://localhost:3000/user/' + user.username + token)
             .map(function (response) { return response.json(); })
             .catch(function (error) { return Observable.throw(error.json()); });
-    }
-    setUser(userToUpdate: User) {
-        this.user = userToUpdate;
-    }
-    getUser() {
-        return this.user;
     }
     updateUser(user){
         var body = JSON.stringify(user);
@@ -52,5 +51,17 @@ export class UserService {
         return this._http.patch('http://localhost:3000/user/' + identifier + token, body, { headers: headers })
             .map(function (response) { return response.json(); })
             .catch(function (error) { return Observable.throw(error.json()); });
+    }
+    getUser() {
+        return this.user;
+    }
+    getCurrentlyDisplayedUsers() {
+        return this.currentlyDisplayedUsers;
+    }
+    setUser(userToUpdate: User) {
+        this.user = userToUpdate;
+    }
+    setCurrentlyDisplayedUsers(users: User[]) {
+        this.users = users;
     }
 }

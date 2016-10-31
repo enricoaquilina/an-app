@@ -20,6 +20,9 @@ export class UserListComponent implements OnInit{
     ) { }
 
     ngOnInit() {
+        this.userService.currentlyDisplayedUsers.subscribe(users => {
+            this.users = users;
+        })
         const isAdmin: boolean = this.authService.isAdmin();
         
         if(!isAdmin){
@@ -30,6 +33,7 @@ export class UserListComponent implements OnInit{
             .subscribe(
                 data => {
                     this.users = data;
+                    this.userService.setCurrentlyDisplayedUsers(data);
                 },
                 error => {
                     this.router.navigate(['/']);

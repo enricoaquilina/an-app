@@ -30,9 +30,7 @@ export class HubComponent{
     deleteHub(){
         this.hubService.deleteHub(this.hub)
             .subscribe(
-                data => {
-                    this.router.navigate(['/']);
-                },
+                data => this.router.navigate(['/']),
                 error => this.errorService.handleError(error)
             );
     }

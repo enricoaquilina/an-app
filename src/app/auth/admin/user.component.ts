@@ -18,10 +18,10 @@ export class UserComponent {
     ) { }
 
     viewUserProfile(){
-        // this.router.navigate(['/f/'+this.user.username]);
+        //TODO
     }
     followUser(){
-
+        //TODO
     }
     editUser(){
         this.userService.setUser(this.user);
@@ -30,7 +30,7 @@ export class UserComponent {
     deleteUser(){
         this.userService.deleteUser(this.user)
             .subscribe(
-                data => this.router.navigate(['/']),
+                data => this.router.navigate(['/users']),
                 error => this.errorService.handleError(error)
             );
     }
