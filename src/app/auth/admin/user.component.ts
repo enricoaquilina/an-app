@@ -18,7 +18,7 @@ export class UserComponent {
     ) { }
 
     viewUserProfile(){
-        // this._router.navigate(['/f/'+this.user.username]);
+        // this.router.navigate(['/f/'+this.user.username]);
     }
     followUser(){
 

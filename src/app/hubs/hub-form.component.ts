@@ -14,22 +14,22 @@ export class HubFormComponent implements OnInit{
     form: FormGroup;
 
     constructor(
-        private _hubService: HubService,
-        private _errorService: ErrorService,
-        private _authService: AuthService,
-        private _fbld: FormBuilder,
-        private _router: Router
+        private hubService: HubService,
+        private errorService: ErrorService,
+        private authService: AuthService,
+        private fbld: FormBuilder,
+        private router: Router
     ) { }
     hub: Hub = null;
 
     onSubmit(form: any){        
         const hub: Hub = new Hub(form.title.trim(), form.description);
-        this._hubService.addHub(hub)
+        this.hubService.addHub(hub)
             .subscribe(
                 data => {
-                    this._router.navigate(['/']);
+                    this.router.navigate(['/']);
                 },
-                error => this._errorService.handleError(error)
+                error => this.errorService.handleError(error)
             );
     }
     onClick(){
@@ -38,15 +38,15 @@ export class HubFormComponent implements OnInit{
     ngOnInit(){
         const logged: boolean = this.isLoggedIn();
         if(!logged){
-            this._router.navigate(['/']);
+            this.router.navigate(['/']);
         }
-        this.form = this._fbld.group({
+        this.form = this.fbld.group({
             title: ['', Validators.required],
             description: ['', Validators.required]
         });
     }
     isLoggedIn(){
-        return this._authService.isLoggedIn();
+        return this.authService.isLoggedIn();
     }
     goBack() {
         window.history.back();

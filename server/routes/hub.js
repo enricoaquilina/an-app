@@ -13,7 +13,7 @@ router.get('/', function(req, res, next){
         .exec(function(err, docs){
             if(err){
                 return res.status(404).json({
-                    title: 'An error occurred',
+                    title: 'We are sorry!',
                     error: err
                 })
             }
@@ -39,7 +39,7 @@ router.post('/', function(req, res, next){
     User.findById(decoded.user._id, function(err, doc){
         if(err){
             return res.status(404).json({
-                title: 'An error occurred',
+                title: 'We are sorry!',
                 error: err
             });
         }
@@ -51,7 +51,7 @@ router.post('/', function(req, res, next){
         hub.save(function(err, result){
             if(err){
                 return res.status(404).json({
-                    title: 'An error occurred',
+                    title: 'We are sorry!',
                     error: err
                 });
             }
@@ -70,7 +70,7 @@ router.delete('/:id', function(req, res, next) {
     Hub.findById(req.params.id, function(err, doc){
         if(err) {
             return res.status(404).json({
-                title: 'An error occurred',
+                title: 'We are sorry!',
                 error: err
             });
         }
@@ -82,7 +82,7 @@ router.delete('/:id', function(req, res, next) {
         }
         if(decoded.user._id != doc.owner){
             return res.status(401).json({
-                title: 'The hub was created by another user!',
+                title: 'We are sorry!',
                 error: err
             });
         }
@@ -90,7 +90,7 @@ router.delete('/:id', function(req, res, next) {
         doc.remove(function(err, doc) {
             if(err) {
                 return res.status(404).json({
-                    title: 'The hub was not found!',
+                    title: 'We are sorry!',
                     error: err
                 })
             }
@@ -105,19 +105,19 @@ router.patch('/:id', function(req,res,next){
     Hub.findById(req.params.id, function(err, doc){
         if(err) {
             return res.status(404).json({
-                title: 'An error occurred',
+                title: 'We are sorry!',
                 error: err
             });
         }
         if(!doc) {
             return res.status(404).json({
-                title: 'The hub was not found!',
+                title: 'We are sorry!',
                 error: err
             });
         }
         if(decoded.user._id != doc.owner){
             return res.status(401).json({
-                title: 'The hub was created by another user!',
+                title: 'We are sorry!',
                 error: err
             });
         }
@@ -126,7 +126,7 @@ router.patch('/:id', function(req,res,next){
         doc.save(function(err, result){
             if(err){
                 return res.status(404).json({
-                    title: 'Not found!',
+                    title: 'We are sorry!',
                     error: err
                 });
             }

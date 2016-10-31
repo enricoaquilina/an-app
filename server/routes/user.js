@@ -30,20 +30,20 @@ router.post('/signin', function(req,res,next){
     User.findOne({username: req.body.username}, function(err, doc){
         if(err){
             return res.status(404).json({
-                title: 'An error occurred',
+                title: 'We are sorry!',
                 error: err
             });
         }
         if(!doc) {
             return res.status(503).json({
-                title: 'The user was not found!',
-                error: {message: 'User could not be found'}
+                title: 'We are sorry!',
+                error: { message: 'User could not be found' }
             });
         }
         if(!passwordHash.verify(req.body.password, doc.password)){
             return res.status(503).json({
-                title: 'Could not sign you in!',
-                error: {message: 'The username or password are incorrect!'}
+                title: 'We are sorry!',
+                error: { message: 'The username or password are incorrect!' }
             });
         }
         var token = jwt.sign({user:doc}, 'd8f6b7a3-d98d-4f0a-88a2-ff90e26a6e70', {expiresIn: 7200});
@@ -82,14 +82,14 @@ router.post('/', function(req, res, next){
             }
             if(!doc) {
                 return res.status(404).json({
-                    title: 'The user was not found!',
-                    error: err
+                    title: 'We are sorry!',
+                    error: { message: 'The user was not found here :(' }
                 });
             }
             if(doc._id != decoded.user._id) {
                 return res.status(401).json({
                     title: 'Not authorized',
-                    error: err
+                    error: { message: 'You are not authorized to access this page!' }
                 });
             }
             res.status(200).json({
@@ -105,23 +105,23 @@ router.get('/', function(req, res, next){
         function(err,doc) {
             if(err) {
                 return res.status(404).json({
-                    title: 'An error occurred',
+                    title: 'We are sorry!',
                     error: err
                 });
             }
             if(!doc) {
                 return res.status(404).json({
-                    title: 'The user was not found!',
-                    error: err
+                    title: 'We are sorry!',
+                    error: { message: 'The requested used was not found here!' }
                 });
             }
             if(!doc.isAdmin){
                 return res.status(401).json({
-                    title: 'Unauthorized',
-                    error: {message: 'You must be an administrator to view this page!'},
+                    title: 'Not authorized',
+                    error: { message: 'You are not authorized to access this page!' },
                 });
             }
-            User.find({_id:{$ne: doc._id}})
+            User.find({ _id : { $ne: doc._id } })
                 .exec(function(err, docs){
                     if(err){
                         return res.status(404).json({
@@ -142,7 +142,7 @@ router.get('/:username', function(req, res, next){
         function(err, doc) {
             if(err) {
                 return res.status(404).json({
-                    title: 'An error occurred',
+                    title: 'We are sorry!',
                     error: err
                 });
             }
@@ -163,7 +163,7 @@ router.patch('/:id', function(req, res, next){
         User.findById(req.params.id, function(err, doc){
             if(err) {
                 return res.status(404).json({
-                    title: 'An error occurred',
+                    title: 'We are sorry!',
                     error: err
                 });
             }
@@ -175,8 +175,8 @@ router.patch('/:id', function(req, res, next){
             }
             if(decoded.user._id != doc._id && !decoded.user.isAdmin){
                 return res.status(401).json({
-                    title: 'You are not authorized to update the user\'s details!',
-                    error: {message: 'You are not authorized'}
+                    title: 'Not authorized',
+                    error: { message: 'You are not authorized to access this page!' }
                 });
             }
             doc.username = req.body.username;
@@ -188,7 +188,7 @@ router.patch('/:id', function(req, res, next){
             doc.save(function(err, doc){
                 if(err){
                     return res.status(404).json({
-                        title: 'Not found!',
+                        title: 'We are sorry!',
                         error: err
                     });
                 }
@@ -204,26 +204,26 @@ router.delete('/:username', function(req, res, next){
     User.findOne({username: req.params.username}, function(err, doc){
         if(err) {
             return res.status(404).json({
-                title: 'An error occurred',
+                title: 'We are sorry!',
                 error: err
             });
         }
         if(!doc) {
             return res.status(404).json({
-                title: 'The user was not found!',
+                title: 'We are sorry!',
                 error: err
             });
         }
         if(decoded.user._id != doc._id && !decoded.user.isAdmin){
             return res.status(401).json({
-                title: 'You can\'t delete this user!',
+                title: 'We are sorry!',
                 error: err
             });
         }
         doc.remove(function(err, doc){
             if(err) {
                 return res.status(404).json({
-                    title: 'The user was not found!',
+                    title: 'We are sorry!',
                     error: err
                 })
             }

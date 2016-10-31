@@ -46,12 +46,15 @@ export class ProfileUpdateComponent implements OnInit {
         this.user.lastName = form.lastName;
 
         this.userService.updateUser(this.user)
-            .subscribe( data => {
-            this.authService.hasSignedIn.emit(data.obj);
-            this.router.navigate(['/']);
-        }, function (error) { 
-            return this._errorService.handleError(error); 
-        });
+            .subscribe( 
+                data => {
+                    this.authService.hasSignedIn.emit(data.obj);
+                    this.router.navigate(['/']);
+                }, 
+                error => { 
+                    return this.errorService.handleError(error); 
+                }
+            );
     };
 
 }

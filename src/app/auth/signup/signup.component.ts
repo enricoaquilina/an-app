@@ -18,31 +18,31 @@ export class SignupComponent implements OnInit{
     // password: Control;
 
     constructor(
-        private _errorService: ErrorService,
-        private _authService: AuthService,
-        private _fbld: FormBuilder,
-        private _router: Router
+        private errorService: ErrorService,
+        private authService: AuthService,
+        private fbld: FormBuilder,
+        private router: Router
     ) { }
 
     onSubmit(form: any) {        
         const user: User = new User(form.username, form.password, form.email);
-        this._authService.addUser(user)
+        this.authService.addUser(user)
             .subscribe(
                 data => {
-                    this._router.navigate(['/signin']);
+                    this.router.navigate(['/signin']);
                 },
-                error => this._errorService.handleError(error)
+                error => this.errorService.handleError(error)
             );
     }
     
     ngOnInit() {
-        this.form = this._fbld.group({
+        this.form = this.fbld.group({
             username: ['', [<any>Validators.required, <any>Validators.minLength(3)]],
             email: ['', [<any>Validators.required,AppValidators.isEmail]],
             password: ['', [<any>Validators.required, <any>Validators.minLength(8)]]
         });
     }
     isLoggedIn() {
-        return this._authService.isLoggedIn();
+        return this.authService.isLoggedIn();
     }
 }

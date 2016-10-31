@@ -38,22 +38,22 @@ export class HubUpdateComponent implements OnInit{
             return false;
         }
     };
-
     isLoggedIn() {
         return this.authService.isLoggedIn();
     };
-
     onSubmit(form: any) {
         this.hub.title = form.title;
         this.hub.description = form.description;
         this.hubService.updateHub(this.hub)
-            .subscribe( data => {
-            this.router.navigate(['/']);
-        }, function (error) { 
-            return this._errorService.handleError(error); 
-        });
+            .subscribe( 
+                data => {
+                    this.router.navigate(['/']);
+                }, 
+                error => { 
+                    return this.errorService.handleError(error); 
+                }
+            );
     };
-
     goBack() {
         window.history.back();
     }

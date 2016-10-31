@@ -28,7 +28,7 @@ export class AppComponent implements OnInit {
         })
         //this is in case a refresh happens  
         var storedUserData = JSON.parse(localStorage.getItem('user')); 
-        if(storedUserData && !this.user ) {
+        if ( storedUserData && !this.user ) {
            this.user = storedUserData;
            this.authService.setCurrUser(storedUserData);
            this.authService.hasSignedIn.emit(storedUserData);            

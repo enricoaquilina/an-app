@@ -13,7 +13,7 @@ router.get('/:id', function(req, res, next){
             .exec(function(err, docs){
                 if(err) {
                     return res.status(404).json({
-                        title: 'An error occurred',
+                        title: 'We are sorry!',
                         error: err
                     });
                 }
@@ -41,20 +41,20 @@ router.post('/', function(req, res, next){
     User.findOne({username: req.body.writer}, function(err, user){
         if(err){
             return res.status(404).json({
-                title: 'An error occurred',
+                title: 'We are sorry!',
                 error: err
             });
         }
         if(!user) {
             return res.status(404).json({
-                title: 'An error occurred',
+                title: 'We are sorry!',
                 error: err
             });
         }
         Hub.findOne({title: req.body.parentHub}, function(err, hub){
             if(err){
                 return res.status(404).json({
-                    title: 'An error occurred',
+                    title: 'We are sorry!',
                     error: err
                 });
             }
@@ -67,7 +67,7 @@ router.post('/', function(req, res, next){
                 hubMessage.save(function(err, result){                    
                     if(err){
                         return res.status(404).json({
-                            title: 'An error occurred',
+                            title: 'We are sorry!',
                             error: err
                         });
                     }                    

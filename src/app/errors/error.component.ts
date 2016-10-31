@@ -20,10 +20,11 @@ export class ErrorComponent implements OnInit{
     currentError: Error = null;
     errorDisplay : string = 'none';
 
-    constructor(private _errorService: ErrorService){}
+    constructor(
+        private errorService: ErrorService) { }
 
     ngOnInit(){
-        this._errorService.errorOccurred
+        this.errorService.errorOccurred
         .subscribe(error => {
             this.currentError = error;
             this.errorDisplay = 'block';
