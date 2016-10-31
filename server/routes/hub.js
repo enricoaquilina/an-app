@@ -50,10 +50,16 @@ router.post('/', function(req, res, next){
         });
         hub.save(function(err, result){
             if(err){
+                if(err.errmsg.startsWith('E11000')){
+                    return res.status(404).json({
+                        title: 'We are sorry!',
+                        error: { message: 'There already is a hub with the same title!' }
+                    });
+                }
                 return res.status(404).json({
                     title: 'We are sorry!',
                     error: err
-                });
+                });                
             }
             doc.subscribedHubs.push(result);
             doc.save();

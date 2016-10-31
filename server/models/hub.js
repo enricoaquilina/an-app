@@ -1,9 +1,10 @@
+var User = require('../models/user');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var User = require('../models/user');
+var mongooseUniqueValidator = require('mongoose-unique-validator');
 
 var hubSchema = new Schema({
-    title: {type: String, required: true},
+    title: {type: String, required: true, unique: true},
     description: {type: String, required: true},
     owner: {type: Schema.Types.ObjectId, ref: 'User'},
     moderators: [{type: Schema.Types.ObjectId, ref: 'User'}],

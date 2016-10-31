@@ -11,19 +11,19 @@ import {Router} from '@angular/router';
     templateUrl: 'hub-form.component.html',
 })
 export class HubFormComponent implements OnInit{
-    form: FormGroup;
+    hubForm: FormGroup;
 
     constructor(
         private hubService: HubService,
         private errorService: ErrorService,
         private authService: AuthService,
-        private fbld: FormBuilder,
+        private fb: FormBuilder,
         private router: Router
     ) { }
     hub: Hub = null;
 
     onSubmit(form: any){        
-        const hub: Hub = new Hub(form.title.trim(), form.description);
+        const hub: Hub = new Hub(form.title.trim().toLowerCase(), form.description);
         this.hubService.addHub(hub)
             .subscribe(
                 data => {
@@ -40,7 +40,7 @@ export class HubFormComponent implements OnInit{
         if(!logged){
             this.router.navigate(['/']);
         }
-        this.form = this.fbld.group({
+        this.hubForm = this.fb.group({
             title: ['', Validators.required],
             description: ['', Validators.required]
         });
