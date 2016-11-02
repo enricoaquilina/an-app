@@ -6,6 +6,7 @@ import {Component, OnInit} from '@angular/core';
 import {ErrorService} from '../../errors/error.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AppComponent} from '../../app.component';
+import {AppValidators} from '../../validators';
 
 @Component({
     selector: 'profile-component',
@@ -20,41 +21,44 @@ export class ProfileUpdateComponent implements OnInit {
         private authService: AuthService
 
     ) { }
-    user: User;
+    user: User = null;
     form: FormGroup;
 
     goBack() {
         window.history.back();
     }
     ngOnInit() {
+        this.form = this.fbld.group({
+            username: ['', [<any>Validators.required, <any>Validators.minLength(3)]],
+            email: ['', [<any>Validators.required, AppValidators.isEmail]],
+            firstName: ['', <any>Validators.minLength(2)],
+            lastName: ['', <any>Validators.minLength(2)],
+        });
+        this.user = this.authService.getCurrUser();
+        // if(!this.user){
+        //     this.router.navigate(['/']);
+        //     return;
+        // }
+
+
         this.authService.hasSignedIn.subscribe(user => {
-            // if(user)
             this.user = user;
         })
-        this.user = this.authService.getCurrUser();
-        this.form = this.fbld.group({
-            username: ['', Validators.required],
-            email: ['', Validators.required],
-            firstName: [''],
-            lastName: ['']
-        });
     };
     onSubmit(form: any) {
-        this.user.username = form.username;
-        this.user.email = form.email;
-        this.user.firstName = form.firstName;
-        this.user.lastName = form.lastName;
+        this.user = new User(form.username, form.email, form.firstName, form.lastName);
+        console.log(this.user);
 
-        this.userService.updateUser(this.user)
-            .subscribe( 
-                data => {
-                    this.authService.hasSignedIn.emit(data.obj);
-                    this.router.navigate(['/']);
-                }, 
-                error => { 
-                    return this.errorService.handleError(error); 
-                }
-            );
+        // this.userService.updateUser(this.user)
+        //     .subscribe( 
+        //         data => {
+        //             this.authService.hasSignedIn.emit(data.obj);
+        //             this.router.navigate(['/']);
+        //         }, 
+        //         error => { 
+        //             return this.errorService.handleError(error); 
+        //         }
+        //     );
     };
 
 }
