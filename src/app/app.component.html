@@ -8,7 +8,7 @@
     </div>
     <div class="panel-body">
         <ul class="nav nav-tabs">
-            <li role="presentation"><a [routerLink]="['/']">Hubs</a></li>
+            <li role="presentation"><a [routerLink]="['/']">Discover</a></li>
             <li role="presentation"><a [routerLink]="['/hub/create']" *ngIf="isLoggedIn()">Create Hub</a></li>
             <li role="presentation"><a [routerLink]="['/signup']" *ngIf="!isLoggedIn()">Signup</a></li>
             <li role="presentation"><a [routerLink]="['/signin']" *ngIf="!isLoggedIn()">Signin</a></li>
@@ -16,9 +16,9 @@
             <li role="presentation"><a [routerLink]="['/users']" *ngIf="isAdmin()">Users</a></li>
             <li role="presentation"><a [routerLink]="['/logout']" *ngIf="isLoggedIn()">Log out</a></li>
         </ul>
-        <button md-raised-button color="primary">PRIMARY</button>
+        <!--<button md-raised-button color="primary">PRIMARY</button>
         <button md-raised-button color="accent">ACCENT</button>
-        <button md-raised-button color="warn">WARN</button>
+        <button md-raised-button color="warn">WARN</button>-->
 
         <router-outlet></router-outlet>
     </div>

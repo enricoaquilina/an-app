@@ -1,5 +1,5 @@
 import {Injectable, EventEmitter} from '@angular/core';
-import {User} from './user';
+import {User} from './user-model';
 import {Http, Headers} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 import {Router} from '@angular/router';

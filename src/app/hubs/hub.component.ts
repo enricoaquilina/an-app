@@ -1,7 +1,7 @@
 import {Component, Input, Output, EventEmitter, OnInit} from '@angular/core';
 import {Hub} from './hub';
 import {HubService} from './hub.service';
-import {AuthService} from '../auth/auth.service';
+import {AuthService} from '../user/auth.service';
 import {ErrorService} from '../errors/error.service';
 import {Router} from '@angular/router';
 

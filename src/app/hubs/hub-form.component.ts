@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Hub} from './hub';
 import {HubService} from './hub.service';
 import {ErrorService} from '../errors/error.service';
-import {AuthService} from '../auth/auth.service';
+import {AuthService} from '../user/auth.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 
@@ -40,6 +40,8 @@ export class HubFormComponent implements OnInit{
         if(!logged){
             this.router.navigate(['/']);
         }
+        console.log(this.authService.getCurrUser());
+
         this.hubForm = this.fb.group({
             title: ['', Validators.required],
             description: ['', Validators.required]

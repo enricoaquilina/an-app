@@ -3,7 +3,7 @@ import {Hub} from './hub';
 import {HubService} from './hub.service';
 import {HubMessage} from './hub-messages/hub-message';
 import {ErrorService} from '../errors/error.service';
-import {AuthService} from '../auth/auth.service';
+import {AuthService} from '../user/auth.service';
 import {AppValidators} from '../validators';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Params, Router} from '@angular/router';

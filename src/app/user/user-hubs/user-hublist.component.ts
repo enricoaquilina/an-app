@@ -1,15 +1,15 @@
 import {Component, OnInit} from '@angular/core';
-import {User} from '../user';
+import {User} from '../user-model';
 import {UserService} from '../user.service';
 import {ErrorService} from '../../errors/error.service';
 import {Router} from '@angular/router';
 import {AuthService} from '../auth.service';
 
 @Component({
-    selector: 'user-list',
-    templateUrl: 'user-list.component.html',
+    selector: 'user-hublist',
+    templateUrl: 'user-hublist.component.html',
 })
-export class UserListComponent implements OnInit{
+export class UserHubListComponent implements OnInit{
     users: User[];
     
     constructor(
@@ -20,15 +20,15 @@ export class UserListComponent implements OnInit{
     ) { }
 
     ngOnInit() {
-        this.userService.currentlyDisplayedUsers.subscribe(users => {
-            this.users = users;
-        })
-        const isAdmin: boolean = this.authService.isAdmin();
+        // this.userService.currentlyDisplayedUsers.subscribe(users => {
+        //     this.users = users;
+        // })
+        // const isAdmin: boolean = this.authService.isAdmin();
         
-        if(!isAdmin){
-            this.router.navigate(['/']);
-            return;
-        }
+        // if(!isAdmin){
+        //     this.router.navigate(['/']);
+        //     return;
+        // }
         this.userService.getUsers()
             .subscribe(
                 data => {

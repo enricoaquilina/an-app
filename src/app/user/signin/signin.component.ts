@@ -1,4 +1,4 @@
-import {User} from '../user';
+import {User} from '../user-model';
 import {Router} from '@angular/router';
 import {AuthService} from '../auth.service';
 import {AppValidators} from '../../validators';

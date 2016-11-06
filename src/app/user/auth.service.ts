@@ -1,5 +1,5 @@
 import {Injectable,EventEmitter} from '@angular/core';
-import {User} from './user';
+import {User} from './user-model';
 import {Http, Headers} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 import {Hub} from '../hubs/hub';
@@ -77,6 +77,6 @@ export class AuthService{
         return test;
     }
     isOwner(userId: string){
-        return JSON.parse(localStorage.getItem('user'))._id == userId;
+        return JSON.parse(localStorage.getItem('user')) ? JSON.parse(localStorage.getItem('user'))._id == userId: false;
     }
 }

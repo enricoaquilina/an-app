@@ -1,7 +1,7 @@
 import {Component,OnInit} from '@angular/core';
 import {HubService} from './hub.service';
 import {ErrorService} from '../errors/error.service';
-import {AuthService} from '../auth/auth.service';
+import {AuthService} from '../user/auth.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Hub} from './hub';
 import {Router} from '@angular/router';
@@ -28,7 +28,8 @@ export class HubUpdateComponent implements OnInit{
             description: ['', Validators.required]
         });
         this.hub = this.hubService.getHub() ? this.hubService.getHub() : null;
-
+        console.log(this.hub);
+        
         if(!this.hub) {
             this.router.navigate(['/']);
             return false;

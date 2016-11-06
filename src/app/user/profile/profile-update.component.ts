@@ -1,4 +1,4 @@
-import {User} from '.././user';
+import {User} from '.././user-model';
 import {Router} from '@angular/router';
 import {AuthService} from '../auth.service';
 import {UserService} from '.././user.service';
@@ -35,30 +35,32 @@ export class ProfileUpdateComponent implements OnInit {
             lastName: ['', <any>Validators.minLength(2)],
         });
         this.user = this.authService.getCurrUser();
-        // if(!this.user){
-        //     this.router.navigate(['/']);
-        //     return;
-        // }
-
+        if(!this.user){
+            this.router.navigate(['/']);
+            return;
+        }
 
         this.authService.hasSignedIn.subscribe(user => {
             this.user = user;
         })
     };
     onSubmit(form: any) {
-        this.user = new User(form.username, form.email, form.firstName, form.lastName);
-        console.log(this.user);
+        this.user.username = form.username;
+        this.user.email = form.email;
+        this.user.firstName = form.firstName;
+        this.user.lastName = form.lastName;
 
-        // this.userService.updateUser(this.user)
-        //     .subscribe( 
-        //         data => {
-        //             this.authService.hasSignedIn.emit(data.obj);
-        //             this.router.navigate(['/']);
-        //         }, 
-        //         error => { 
-        //             return this.errorService.handleError(error); 
-        //         }
-        //     );
+        this.userService.updateUser(this.user)
+            .subscribe( 
+                data => {
+                    this.authService.hasSignedIn.emit(data.obj);
+                    localStorage.setItem('user', JSON.stringify(data.obj));
+                    this.router.navigate(['/']);
+                }, 
+                error => { 
+                    return this.errorService.handleError(error); 
+                }
+            );
     };
 
 }

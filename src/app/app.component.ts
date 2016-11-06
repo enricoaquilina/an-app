@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {AuthService} from './auth/auth.service';
+import {AuthService} from './user/auth.service';
 import {ErrorService} from './errors/error.service';
-import {User} from './auth/user';
+import {User} from './user/user-model';
 
 @Component({
     selector: 'my-app',
