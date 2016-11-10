@@ -7,6 +7,7 @@ import {ErrorService} from '../../errors/error.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AppComponent} from '../../app.component';
 import {AppValidators} from '../../validators';
+import {HubService} from '../../hubs/hub.service';
 
 @Component({
     selector: 'profile-component',
@@ -18,9 +19,10 @@ export class ProfileUpdateComponent implements OnInit {
         private errorService: ErrorService,
         private fbld: FormBuilder,
         private router: Router,
-        private authService: AuthService
-
+        private authService: AuthService,
+        private hubService: HubService
     ) { }
+
     user: User = null;
     form: FormGroup;
 
@@ -34,6 +36,7 @@ export class ProfileUpdateComponent implements OnInit {
             firstName: ['', <any>Validators.minLength(2)],
             lastName: ['', <any>Validators.minLength(2)],
         });
+
         this.user = this.authService.getCurrUser();
         if(!this.user){
             this.router.navigate(['/']);
@@ -43,7 +46,7 @@ export class ProfileUpdateComponent implements OnInit {
         this.authService.hasSignedIn.subscribe(user => {
             this.user = user;
         })
-    };
+    }
     onSubmit(form: any) {
         this.user.username = form.username;
         this.user.email = form.email;
@@ -61,6 +64,12 @@ export class ProfileUpdateComponent implements OnInit {
                     return this.errorService.handleError(error); 
                 }
             );
-    };
-
+    }
+    getUserCreatedHubs() {
+        this.router.navigate(['ownedhubs/' + this.user.username]);
+    }
+    getUserSubbedHubs() {
+        //TODO
+        this.router.navigate(['subscribedhubs/' + this.user.username]);
+    }
 }

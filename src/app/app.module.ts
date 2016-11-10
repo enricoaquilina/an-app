@@ -22,7 +22,8 @@ import {LogoutComponent} from './user/logout/logout.component';
 import {UserListComponent} from './user/admin/user-list.component';
 import {UserUpdateComponent} from './user/admin/user-update.component';
 import {UserComponent} from './user/admin/user.component';
-import {UserHubListComponent} from './user/user-hubs/user-hublist.component';
+import {UserOwnedHubsComponent} from './user/user-hubs/ownedhubs/user-owned-hubs.component';
+import {UserSubbedHubsComponent} from './user/user-hubs/subbedhubs/user-subbed-hubs.component';
 
 import {AuthService} from './user/auth.service';
 import {UserService} from './user/user.service';
@@ -39,8 +40,8 @@ import {HubService} from './hubs/hub.service';
         HubMainComponent, HubFormComponent, HubUpdateComponent,
         HubMessageComponent, ProfileUpdateComponent, SigninComponent,
         SignupComponent, LogoutComponent, UserListComponent,
-        UserUpdateComponent, UserComponent, UserHubListComponent,
-        ErrorComponent
+        UserUpdateComponent, UserComponent, UserOwnedHubsComponent,
+        UserSubbedHubsComponent, ErrorComponent
         // FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES
     ],
     providers: [ AuthService, UserService, HubService,

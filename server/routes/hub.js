@@ -34,6 +34,56 @@ router.get('/', function(req, res, next){
 //         next();
 //     })
 // })
+
+//get user hubs
+// router.get('/ownedhubs/:username', function(req, res, next){
+//     // var decoded = token.decode(req.query.token);
+//     User.findOne({username: req.params.username}, function(err, doc) {
+//         if(err){
+//             return res.status(404).json({
+//                 title: 'We are sorry!',
+//                 error: err
+//             });
+//         }
+//         Hub.find({owner: doc._id}, function(err, docs){
+//             if(err){
+//                 return res.status(404).json({
+//                     title: 'We are sorry!',
+//                     error: err
+//                 });
+//             }
+//             res.status(200).json({
+//                 message: 'success',
+//                 obj: docs
+//             });
+//         })
+//     })
+// })
+// //get subbed hubs
+// router.get('/subbedhubs/:username', function(req, res, next){
+//     // var decoded = token.decode(req.query.token);
+//     User.findOne({username: req.params.username}, function(err, doc) {
+//         if(err){
+//             return res.status(404).json({
+//                 title: 'We are sorry!',
+//                 error: err
+//             });
+//         }
+//         Hub.find({owner: doc._id}, function(err, docs){
+//             if(err){
+//                 return res.status(404).json({
+//                     title: 'We are sorry!',
+//                     error: err
+//                 });
+//             }
+//             res.status(200).json({
+//                 message: 'success',
+//                 obj: docs
+//             });
+//         })
+//     })
+// })
+
 router.post('/', function(req, res, next){
     var decoded = token.decode(req.query.token);
     User.findById(decoded.user._id, function(err, doc){
@@ -61,7 +111,7 @@ router.post('/', function(req, res, next){
                     error: err
                 });                
             }
-            doc.subscribedHubs.push(result);
+            doc.ownedHubs.push(result);
             doc.save();
             res.status(201).json({
                 message: 'The hub has been saved',

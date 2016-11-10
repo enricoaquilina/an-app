@@ -4,14 +4,14 @@ import {HubMessage} from './hub-messages/hub-message';
 import {Http, Headers} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 import {Router} from '@angular/router';
-
+import {User} from '../user/user-model';
 
 @Injectable()
 export class HubService {
     constructor(
         private _http: Http,
         private _router: Router        
-    ){}
+    ) { }
 
     hubs: Hub[] = [];
     isEdit = new EventEmitter<Hub>();
@@ -31,7 +31,7 @@ export class HubService {
             return hub;
         })
         .catch(function (error) { return Observable.throw(error.json()); });
-    };
+    }
     addHubMessage(hubMessage) {
         var body = JSON.stringify(hubMessage);
         var headers = new Headers({ 'Content-Type': 'application/json' });
@@ -50,7 +50,7 @@ export class HubService {
         return this._http.patch('http://localhost:3000/hub/' + hub.hubId + token, body, { headers: headers })
             .map(function (response) { return response.json(); })
             .catch(function (error) { return Observable.throw(error.json()); });
-    };
+    }
     getHubs() {
         return this._http.get('http://localhost:3000/hub')
             .map(function (response) {
@@ -65,13 +65,13 @@ export class HubService {
             return objs;
         })
         .catch(function (error) { return Observable.throw(error.json()); });
-    };
-    getHubMessages(hubTitle) {
-        return this._http.get('http://localhost:3000/message/' + hubTitle.title)
+    }
+    getHubMessages(hubTitle: string) {
+        return this._http.get('http://localhost:3000/message/' + hubTitle)
             .map(function (response) {
             var data = response.json().obj;
             var objs = [];
-          
+
              for (var i = 0; i < data.length; i++) {
                 var date = new Date(data[i].creationDate);
                 var dateFormatted = date.getDate()+'/'+date.getMonth()+'/'+date.getFullYear();
@@ -85,7 +85,7 @@ export class HubService {
     editHub(hubToUpdate: Hub) {
         this._router.navigate(['/hub/update']);
         this.hub = hubToUpdate;
-    };
+    }
     deleteHub(hub: Hub) {
         var token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
         this.hubs.splice(this.hubs.indexOf(hub), 1);
@@ -94,8 +94,25 @@ export class HubService {
         return this._http.delete('http://localhost:3000/hub/' + hub.hubId + token)
             .map(function (response) { response.json() })
             .catch(function (error) { return Observable.throw(error.json()); });
-    };
-    
+    }
+    getUserCreatedHubs(username: string) {
+        // var token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
+        return this._http.get('http://localhost:3000/hub/ownedhubs/' + username)
+            .map(function (response) {
+            var data = response.json().obj;
+            var objs = [];
+            
+            for (var i = 0; i < data.length; i++) {
+                var message = new Hub(
+                    data[i].title,
+                    data[i].description
+                );
+                objs.push(message);
+            }
+            return objs;
+        })
+        .catch(function (error) { return Observable.throw(error.json()); });
+    }
     getHub() {
         return this.hub;
     }

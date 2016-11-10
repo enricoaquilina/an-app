@@ -12,7 +12,8 @@ import {ProfileUpdateComponent} from './user/profile/profile-update.component';
 
 import {HubListComponent} from './hubs/hub-list.component';
 import {UserListComponent} from './user/admin/user-list.component';
-import {UserHubListComponent} from './user/user-hubs/user-hublist.component';
+import {UserOwnedHubsComponent} from './user/user-hubs/ownedhubs/user-owned-hubs.component';
+import {UserSubbedHubsComponent} from './user/user-hubs/subbedhubs/user-subbed-hubs.component';
 
 const APP_ROUTES: Routes = [
     {path: '', component: HubListComponent},
@@ -25,7 +26,8 @@ const APP_ROUTES: Routes = [
     {path: 'users', component: UserListComponent},
     {path: 'user/update', component: UserUpdateComponent},
     {path: 'profile', component: ProfileUpdateComponent},
-    {path: ':username/hubs', component: UserHubListComponent}
+    {path: 'ownedhubs/:username', component: UserOwnedHubsComponent},
+    {path: 'subscribedhubs/:username', component: UserSubbedHubsComponent}
 ];
 
 export const ROUTING = RouterModule.forRoot(APP_ROUTES);

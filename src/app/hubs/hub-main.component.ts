@@ -43,15 +43,14 @@ export class HubMainComponent implements OnInit{
     }
 
     ngOnInit(){
-
         this.sub = this.route
             .params
             .subscribe(params => {
                 let title = params['title'];
-                var obj = {
-                    title: title
-                }
-                this.hubService.getHubMessages(obj)
+                // var obj = {
+                //     title: title
+                // }
+                this.hubService.getHubMessages(title)
                     .subscribe(
                         data => {
                             this.hubMessages = data;

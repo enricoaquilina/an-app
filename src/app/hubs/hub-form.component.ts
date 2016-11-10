@@ -40,8 +40,6 @@ export class HubFormComponent implements OnInit{
         if(!logged){
             this.router.navigate(['/']);
         }
-        console.log(this.authService.getCurrUser());
-
         this.hubForm = this.fb.group({
             title: ['', Validators.required],
             description: ['', Validators.required]

@@ -27,34 +27,36 @@ router.post('/create', function(req, res, next){
     })
 })
 router.post('/signin', function(req,res,next){
-    User.findOne({username: req.body.username}, function(err, doc){
-        if(err){
-            return res.status(404).json({
-                title: 'We are sorry!',
-                error: err
-            });
-        }
-        if(!doc) {
-            return res.status(503).json({
-                title: 'We are sorry!',
-                error: { message: 'User could not be found' }
-            });
-        }
-        if(!passwordHash.verify(req.body.password, doc.password)){
-            return res.status(503).json({
-                title: 'We are sorry!',
-                error: { message: 'The username or password are incorrect!' }
-            });
-        }
-        var token = jwt.sign({user:doc}, 'd8f6b7a3-d98d-4f0a-88a2-ff90e26a6e70', {expiresIn: 7200});
-        doc.password = '';
+    User.findOne({username: req.body.username})
+        .populate('ownedHubs', 'title description')
+        .exec(function(err, doc) {
+            if(err){
+                return res.status(404).json({
+                    title: 'We are sorry!',
+                    error: err
+                });
+            }
+            if(!doc) {
+                return res.status(503).json({
+                    title: 'We are sorry!',
+                    error: { message: 'User could not be found' }
+                });
+            }
+            if(!passwordHash.verify(req.body.password, doc.password)){
+                return res.status(503).json({
+                    title: 'We are sorry!',
+                    error: { message: 'The username or password are incorrect!' }
+                });
+            }
+            var token = jwt.sign({user:doc}, 'd8f6b7a3-d98d-4f0a-88a2-ff90e26a6e70', {expiresIn: 7200});
+            doc.password = '';
 
-        res.status(200).json({
-            message: 'Success!',
-            token: token,
-            userId: doc._id,
-            obj: JSON.stringify(doc)
-        })
+            res.status(200).json({
+                message: 'Success!',
+                token: token,
+                userId: doc._id,
+                obj: JSON.stringify(doc)
+            })
     })
 })
 router.use('/', function(req, res, next) {

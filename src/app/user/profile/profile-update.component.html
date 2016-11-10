@@ -1,6 +1,7 @@
 <section class="col-md-8 col-md-offset-2 spacing">
      <div class="panel-body">
-         <button type="submit" class="btn btn-primary">My Hubs</button>
+         <button type="submit" class="btn btn-primary" (click)="getUserCreatedHubs()">My Hubs</button>
+         <button type="submit" class="btn btn-default" (click)="getUserSubbedHubs()">Subscribed hubs</button>
     </div>
     <form  [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
          <div class="panel-body">
