@@ -4,11 +4,14 @@ import {Http, Headers} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 import {Hub} from '../hubs/hub';
 import {HubService} from '../hubs/hub.service';
+import {ErrorService} from '../errors/error.service';
 
 @Injectable()
 export class AuthService{
     constructor(private _http: Http,
-                private hubService: HubService){}
+                // private hubService: HubService
+                private errorService: ErrorService
+                ){}
     user: User;
     hasSignedIn = new EventEmitter<User>();
 
@@ -44,7 +47,7 @@ export class AuthService{
     }
     logout(){
         this.setCurrUser(null);
-        this.hubService.setHub(null);
+        // this.hubService.setHub(null);
         this.hasSignedIn.emit(this.user);
         localStorage.clear();
     }

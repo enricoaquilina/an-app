@@ -27,6 +27,9 @@ export class HubFormComponent implements OnInit{
         this.hubService.addHub(hub)
             .subscribe(
                 data => {
+                    let updatedUser = this.authService.getCurrUser();
+                    updatedUser.ownedHubs.push(data);
+                    this.authService.hasSignedIn.emit(updatedUser);
                     this.router.navigate(['/']);
                 },
                 error => this.errorService.handleError(error)

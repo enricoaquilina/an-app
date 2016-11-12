@@ -21,8 +21,13 @@ export class UserOwnedHubsComponent implements OnInit{
     ) { }
     
     userOwnedHubs: Hub[];
-    
+    user: User;
+
     ngOnInit() {
+        this.authService.hasSignedIn.subscribe(user => {
+            this.user = user;
+            this.userOwnedHubs = this.user.ownedHubs;
+        })
         this.userOwnedHubs = this.authService.getCurrUser().ownedHubs;
     }
     searchUser(){

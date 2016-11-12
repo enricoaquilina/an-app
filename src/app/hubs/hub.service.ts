@@ -5,12 +5,16 @@ import {Http, Headers} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 import {Router} from '@angular/router';
 import {User} from '../user/user-model';
+import {ErrorService} from '../errors/error.service';
+import {AuthService} from '../user/auth.service';
 
 @Injectable()
 export class HubService {
     constructor(
-        private _http: Http,
-        private _router: Router        
+        private http: Http,
+        private router: Router,
+        private errorService: ErrorService,
+        private authService: AuthService  
     ) { }
 
     hubs: Hub[] = [];
@@ -24,10 +28,14 @@ export class HubService {
         var body = JSON.stringify(hub);
         var headers = new Headers({ 'Content-Type': 'application/json' });
         var token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
-        return this._http.post('http://localhost:3000/hub' + token, body, { headers: headers })
+        return this.http.post('http://localhost:3000/hub' + token, body, { headers: headers })
             .map(function (response) {
             var data = response.json().obj;
             var hub = new Hub(data.title, data.description, data.owner.username, data._id, data.owner._id);
+            
+            let user = JSON.parse(localStorage.getItem('user'));
+            user.ownedHubs.push(hub);
+            this.authService.hasSignedIn.emit(user);
             return hub;
         })
         .catch(function (error) { return Observable.throw(error.json()); });
@@ -36,7 +44,7 @@ export class HubService {
         var body = JSON.stringify(hubMessage);
         var headers = new Headers({ 'Content-Type': 'application/json' });
         var token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
-        return this._http.post('http://localhost:3000/message'+token, body, { headers: headers })
+        return this.http.post('http://localhost:3000/message'+token, body, { headers: headers })
             .map(function (response) {
             var data = response.json().obj;
             return data;
@@ -47,12 +55,12 @@ export class HubService {
         var body = JSON.stringify(hub);
         var headers = new Headers({ 'Content-Type': 'application/json' });
         var token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
-        return this._http.patch('http://localhost:3000/hub/' + hub.hubId + token, body, { headers: headers })
+        return this.http.patch('http://localhost:3000/hub/' + hub.hubId + token, body, { headers: headers })
             .map(function (response) { return response.json(); })
             .catch(function (error) { return Observable.throw(error.json()); });
     }
     getHubs() {
-        return this._http.get('http://localhost:3000/hub')
+        return this.http.get('http://localhost:3000/hub')
             .map(function (response) {
             var data = response.json().obj;
             
@@ -67,7 +75,7 @@ export class HubService {
         .catch(function (error) { return Observable.throw(error.json()); });
     }
     getHubMessages(hubTitle: string) {
-        return this._http.get('http://localhost:3000/message/' + hubTitle)
+        return this.http.get('http://localhost:3000/message/' + hubTitle)
             .map(function (response) {
             var data = response.json().obj;
             var objs = [];
@@ -83,21 +91,26 @@ export class HubService {
         .catch(function (error) { return Observable.throw(error.json()); });
     }
     editHub(hubToUpdate: Hub) {
-        this._router.navigate(['/hub/update']);
+        this.router.navigate(['/hub/update']);
         this.hub = hubToUpdate;
     }
     deleteHub(hub: Hub) {
         var token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
         this.hubs.splice(this.hubs.indexOf(hub), 1);
+        
         this.currentlyDisplayedHubs.emit(this.hubs);
+        
+        let user = JSON.parse(localStorage.getItem('user'));
+        user.ownedHubs = this.hubs;
+        this.authService.hasSignedIn.emit(user);
 
-        return this._http.delete('http://localhost:3000/hub/' + hub.hubId + token)
+        return this.http.delete('http://localhost:3000/hub/' + hub.hubId + token)
             .map(function (response) { response.json() })
             .catch(function (error) { return Observable.throw(error.json()); });
     }
     getUserCreatedHubs(username: string) {
         // var token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
-        return this._http.get('http://localhost:3000/hub/ownedhubs/' + username)
+        return this.http.get('http://localhost:3000/hub/ownedhubs/' + username)
             .map(function (response) {
             var data = response.json().obj;
             var objs = [];
