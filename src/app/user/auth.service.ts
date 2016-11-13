@@ -4,13 +4,15 @@ import {Http, Headers} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 import {Hub} from '../hubs/hub';
 import {HubService} from '../hubs/hub.service';
-import {ErrorService} from '../errors/error.service';
+import {Router} from '@angular/router';
+
 
 @Injectable()
 export class AuthService{
     constructor(private _http: Http,
+                private router: Router
+
                 // private hubService: HubService
-                private errorService: ErrorService
                 ){}
     user: User;
     hasSignedIn = new EventEmitter<User>();
@@ -19,10 +21,7 @@ export class AuthService{
         const body = JSON.stringify(user);
         const headers = new Headers({'Content-Type': 'application/json'});
         return this._http.post('http://localhost:3000/user/create', body, {headers:headers})
-            .map(response => response.json()
-                // let user = new User(data.email, data.password, data.firstName, data.lastName);
-                // return user;
-            )
+            .map(response => response.json())
             .catch(error => Observable.throw(error.json()));
     }
     // removeUser(user: User){
@@ -40,9 +39,7 @@ export class AuthService{
         const body = JSON.stringify(user);
         const headers = new Headers({'Content-Type': 'application/json'})
         return this._http.post('http://localhost:3000/user/signin', body, {headers: headers})
-            .map(response => 
-                response.json()
-            )
+            .map(response => response.json())
             .catch(error => Observable.throw(error.json()));
     }
     logout(){

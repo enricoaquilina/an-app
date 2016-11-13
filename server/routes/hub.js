@@ -115,7 +115,7 @@ router.post('/', function(req, res, next){
             doc.save();
             res.status(201).json({
                 message: 'The hub has been saved',
-                obj: result
+                obj: doc
             });
         })
     })

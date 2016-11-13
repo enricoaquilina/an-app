@@ -31,6 +31,10 @@ export class HubComponent{
         this.hubService.deleteHub(this.hub)
             .subscribe(
                 data => {
+                    let updatedUser = this.authService.getCurrUser();
+                    updatedUser.ownedHubs.pop();
+                    localStorage.setItem('user', JSON.stringify(updatedUser));
+                    this.authService.hasSignedIn.emit(updatedUser);
                     this.router.navigate(['/']);
                 },
                 error => this.errorService.handleError(error)

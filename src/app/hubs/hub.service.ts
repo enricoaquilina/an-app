@@ -5,8 +5,8 @@ import {Http, Headers} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 import {Router} from '@angular/router';
 import {User} from '../user/user-model';
-import {ErrorService} from '../errors/error.service';
 import {AuthService} from '../user/auth.service';
+import {ErrorService} from '../errors/error.service';
 
 @Injectable()
 export class HubService {
@@ -31,14 +31,22 @@ export class HubService {
         return this.http.post('http://localhost:3000/hub' + token, body, { headers: headers })
             .map(function (response) {
             var data = response.json().obj;
-            var hub = new Hub(data.title, data.description, data.owner.username, data._id, data.owner._id);
             
-            let user = JSON.parse(localStorage.getItem('user'));
-            user.ownedHubs.push(hub);
-            this.authService.hasSignedIn.emit(user);
-            return hub;
+            let updatedUser = new User(
+                data.owner.username,
+                '',
+                data.owner.email,
+                data.owner.ownedHubs,
+                data.owner.subbedHubs,
+                data.owner.firstName,
+                data.owner.lastName,
+                data.owner.isAdmin
+            );
+            return updatedUser;
         })
-        .catch(function (error) { return Observable.throw(error.json()); });
+        .catch(function (error) { 
+            return Observable.throw(error); 
+        });
     }
     addHubMessage(hubMessage) {
         var body = JSON.stringify(hubMessage);
@@ -100,9 +108,10 @@ export class HubService {
         
         this.currentlyDisplayedHubs.emit(this.hubs);
         
-        let user = JSON.parse(localStorage.getItem('user'));
-        user.ownedHubs = this.hubs;
-        this.authService.hasSignedIn.emit(user);
+        // let updatedUser = JSON.parse(localStorage.getItem('user'));
+        // updatedUser.ownedHubs = this.hubs;
+        // localStorage.setItem('user', JSON.stringify(updatedUser));
+        // this.authService.hasSignedIn.emit(updatedUser);
 
         return this.http.delete('http://localhost:3000/hub/' + hub.hubId + token)
             .map(function (response) { response.json() })

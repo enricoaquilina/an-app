@@ -25,8 +25,9 @@ export class SignupComponent implements OnInit{
     ) { }
 
     onSubmit(form: any) {        
-        const user: User = new User(form.username, form.password, form.email);
-        this.authService.addUser(user)
+        let newUser: User = new User(form.username, form.password, form.email);
+
+        this.authService.addUser(newUser)
             .subscribe(
                 data => {
                     this.router.navigate(['/signin']);
