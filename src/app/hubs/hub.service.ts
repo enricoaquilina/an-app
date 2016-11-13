@@ -31,18 +31,13 @@ export class HubService {
         return this.http.post('http://localhost:3000/hub' + token, body, { headers: headers })
             .map(function (response) {
             var data = response.json().obj;
-            
-            let updatedUser = new User(
-                data.owner.username,
-                '',
-                data.owner.email,
-                data.owner.ownedHubs,
-                data.owner.subbedHubs,
-                data.owner.firstName,
-                data.owner.lastName,
-                data.owner.isAdmin
-            );
-            return updatedUser;
+
+            let user = JSON.parse(localStorage.getItem('user'));
+            let hubToAdd = new Hub(data.title, data.description, data.owner.username, data._id, data.owner._id);
+            user.ownedHubs.push(hubToAdd);
+            localStorage.setItem('user', JSON.stringify(user));
+
+            return user;
         })
         .catch(function (error) { 
             return Observable.throw(error); 
@@ -71,11 +66,18 @@ export class HubService {
         return this.http.get('http://localhost:3000/hub')
             .map(function (response) {
             var data = response.json().obj;
-            
+            let user = JSON.parse(localStorage.getItem('user')) ? JSON.parse(localStorage.getItem('user')) : null;
             var objs = [];
             for (var i = 0; i < data.length; i++) {
-                var hub = new Hub(data[i].title, data[i].description, data[i].owner.username, data[i]._id, data[i].owner._id);
-                objs.push(hub);
+                var hub = new Hub(
+                    data[i].title, 
+                    data[i].description, 
+                    data[i].owner.username, 
+                    data[i]._id, 
+                    data[i].owner._id
+                );
+                if((user && user.username !== data[i].owner.username))
+                    objs.push(hub);
             }
             this.hubs = objs;
             return objs;
@@ -108,13 +110,12 @@ export class HubService {
         
         this.currentlyDisplayedHubs.emit(this.hubs);
         
-        // let updatedUser = JSON.parse(localStorage.getItem('user'));
-        // updatedUser.ownedHubs = this.hubs;
-        // localStorage.setItem('user', JSON.stringify(updatedUser));
-        // this.authService.hasSignedIn.emit(updatedUser);
+        let user = JSON.parse(localStorage.getItem('user'));
+        user.ownedHubs = this.hubs;
+        localStorage.setItem('user', JSON.stringify(user));
 
         return this.http.delete('http://localhost:3000/hub/' + hub.hubId + token)
-            .map(function (response) { response.json() })
+            .map(function (response) { return user; })
             .catch(function (error) { return Observable.throw(error.json()); });
     }
     getUserCreatedHubs(username: string) {

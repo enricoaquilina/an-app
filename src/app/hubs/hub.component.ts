@@ -24,18 +24,17 @@ export class HubComponent{
     color = 'white';
     show = true;
 
-    editHub(){
+    editHub() {
+        // console.log(this.hubService);
         this.hubService.editHub(this.hub);
     }
     deleteHub(){
         this.hubService.deleteHub(this.hub)
             .subscribe(
                 data => {
-                    let updatedUser = this.authService.getCurrUser();
-                    updatedUser.ownedHubs.pop();
-                    localStorage.setItem('user', JSON.stringify(updatedUser));
-                    this.authService.hasSignedIn.emit(updatedUser);
-                    this.router.navigate(['/']);
+                    // console.log(data);
+                    this.authService.setCurrUser(data);
+                    // this.router.navigate(['/']);
                 },
                 error => this.errorService.handleError(error)
             );
@@ -48,7 +47,8 @@ export class HubComponent{
         //TODO
     }
     isOwner(){
-        return this.authService.isOwner(this.hub.ownerId);
+        console.log(this.hub);
+        return this.authService.isHubOwner(this.hub);
     }
     isLoggedIn(){
         return this.authService.isLoggedIn();

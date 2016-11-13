@@ -27,18 +27,8 @@ export class HubFormComponent implements OnInit{
         this.hubService.addHub(hub)
             .subscribe(
                 data => {
-                    console.log(data);
-                    console.log('here');
-
-                    // var hub = new Hub(data.title, data.description, data.owner.username, data._id, data.owner._id);           
-                    // let updatedUser = JSON.parse(localStorage.getItem('user'));
-                    // updatedUser.ownedHubs.push(data);
-                    // console.log(updatedUser);
-
-                    // localStorage.setItem('user', JSON.stringify(updatedUser));
-                    
-                    // this.authService.hasSignedIn.emit(updatedUser);
-                    // this.router.navigate(['/']);
+                    this.authService.setCurrUser(data);
+                    this.router.navigate(['/']);
                 },
                 error => this.errorService.handleError(error)
             );

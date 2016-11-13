@@ -28,6 +28,9 @@ export class SigninComponent implements OnInit{
         this.authService.signInUser(user)
             .subscribe(
                 data => {
+                    console.log('test here');
+                    console.log(data.obj);
+
    	                this.authService.setCurrUser(JSON.parse(data.obj));
                     this.authService.hasSignedIn.emit(user);
 

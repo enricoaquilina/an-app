@@ -43,7 +43,7 @@ export class UserService {
             .map(function (response) { return response.json(); })
             .catch(function (error) { return Observable.throw(error.json()); });
     }
-    updateUser(user){
+    updateUser(user: User){
         var body = JSON.stringify(user);
         var headers = new Headers({ 'Content-Type': 'application/json' });
         var token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
