@@ -29,8 +29,14 @@ router.post('/create', function(req, res, next){
 })
 router.post('/signin', function(req,res,next){
     User.findOne({username: req.body.username})
-        .populate('ownedHubs', 'title description')
-        .populate('owner', 'username email')
+        .populate({
+            path: 'ownedHubs', 
+            select: 'title description owner',
+            populate: {
+                path:'owner',
+                select: 'username email firstName lastName'
+            }
+        })
         .exec(function(err, doc) {
             if(err){
                 return res.status(404).json({

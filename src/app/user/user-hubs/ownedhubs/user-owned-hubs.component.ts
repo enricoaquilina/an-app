@@ -19,7 +19,7 @@ export class UserOwnedHubsComponent implements OnInit{
         private authService: AuthService,
         private hubService: HubService
     ) { }
-    
+
     userOwnedHubs: Hub[];
     user: User;
 
@@ -27,15 +27,12 @@ export class UserOwnedHubsComponent implements OnInit{
         this.authService.hasSignedIn.subscribe(user => {
             this.user = user;
             this.userOwnedHubs = this.user ? this.user.ownedHubs: [];
-            console.log('in the user owned hubs component');            
         })
         if(!this.user) {
-            console.log('here in the second part of the user owned component');
-            console.log(this.authService.getCurrUser());
             this.userOwnedHubs = this.authService.getCurrUser().ownedHubs;
         }
     }
     searchUser(){
-        
+
     }
 }

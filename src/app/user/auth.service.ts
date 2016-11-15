@@ -72,8 +72,8 @@ export class AuthService{
     isAdmin(){
         return this.user? this.user.isAdmin: false;
     }
-    isHubOwner(hub: Hub) {       
-        let test = hub.ownerUsername === JSON.parse(localStorage.getItem('user')).username;
+    isHubOwner(hub: Hub) {   
+        let test = hub.owner.username === JSON.parse(localStorage.getItem('user')).username;
         return test;
     }
     isOwner(userId: string){

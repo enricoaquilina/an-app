@@ -25,16 +25,13 @@ export class HubComponent{
     show = true;
 
     editHub() {
-        // console.log(this.hubService);
         this.hubService.editHub(this.hub);
     }
     deleteHub(){
         this.hubService.deleteHub(this.hub)
             .subscribe(
                 data => {
-                    // console.log(data);
                     this.authService.setCurrUser(data);
-                    // this.router.navigate(['/']);
                 },
                 error => this.errorService.handleError(error)
             );
@@ -47,7 +44,6 @@ export class HubComponent{
         //TODO
     }
     isOwner(){
-        console.log(this.hub);
         return this.authService.isHubOwner(this.hub);
     }
     isLoggedIn(){
