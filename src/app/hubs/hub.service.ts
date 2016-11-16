@@ -89,7 +89,6 @@ export class HubService {
                 if((user && user.username !== data[i].owner.username))
                     objs.push(hub);
             }
-            this.hubs = objs;
             return objs;
         })
         .catch(function (error) { return Observable.throw(error.json()); });
@@ -117,7 +116,9 @@ export class HubService {
     deleteHub(hub: Hub) {
         var token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
         this.hubs.splice(this.hubs.indexOf(hub), 1);
-        
+        console.log(this.hubs);
+        console.log(hub);
+
         this.currentlyDisplayedHubs.emit(this.hubs);
         
         let user = JSON.parse(localStorage.getItem('user'));
@@ -142,6 +143,8 @@ export class HubService {
                 );
                 objs.push(message);
             }
+            this.hubs = objs;
+
             return objs;
         })
         .catch(function (error) { return Observable.throw(error.json()); });
