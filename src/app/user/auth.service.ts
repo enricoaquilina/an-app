@@ -34,6 +34,8 @@ export class AuthService{
     }
     setCurrUser(user: User) {
         this.user = user;
+        localStorage.setItem('user', JSON.stringify(user));
+        this.hasSignedIn.emit(user);
     }
     signInUser(user: User){
         const body = JSON.stringify(user);

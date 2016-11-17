@@ -35,56 +35,7 @@ router.get('/', function(req, res, next){
 //     })
 // })
 
-//get user hubs
-// router.get('/ownedhubs/:username', function(req, res, next){
-//     // var decoded = token.decode(req.query.token);
-//     User.findOne({username: req.params.username}, function(err, doc) {
-//         if(err){
-//             return res.status(404).json({
-//                 title: 'We are sorry!',
-//                 error: err
-//             });
-//         }
-//         Hub.find({owner: doc._id}, function(err, docs){
-//             if(err){
-//                 return res.status(404).json({
-//                     title: 'We are sorry!',
-//                     error: err
-//                 });
-//             }
-//             res.status(200).json({
-//                 message: 'success',
-//                 obj: docs
-//             });
-//         })
-//     })
-// })
-// //get subbed hubs
-// router.get('/subbedhubs/:username', function(req, res, next){
-//     // var decoded = token.decode(req.query.token);
-//     User.findOne({username: req.params.username}, function(err, doc) {
-//         if(err){
-//             return res.status(404).json({
-//                 title: 'We are sorry!',
-//                 error: err
-//             });
-//         }
-//         Hub.find({owner: doc._id}, function(err, docs){
-//             if(err){
-//                 return res.status(404).json({
-//                     title: 'We are sorry!',
-//                     error: err
-//                 });
-//             }
-//             res.status(200).json({
-//                 message: 'success',
-//                 obj: docs
-//             });
-//         })
-//     })
-// })
-
-router.post('/', function(req, res, next){
+router.post('/ownedhubs', function(req, res, next){
     var decoded = token.decode(req.query.token);
     User.findById(decoded.user._id, function(err, doc){
         if(err){
@@ -120,7 +71,6 @@ router.post('/', function(req, res, next){
         })
     })
 })
-
 router.delete('/:id', function(req, res, next) {
     var decoded = token.decode(req.query.token);
     Hub.findById(req.params.id, function(err, doc){
@@ -156,7 +106,7 @@ router.delete('/:id', function(req, res, next) {
         });
     });
 });
-router.patch('/:id', function(req,res,next){
+router.patch('/:id',function(req,res,next){
     var decoded = token.decode(req.query.token);
     Hub.findById(req.params.id, function(err, doc){
         if(err) {
@@ -191,6 +141,47 @@ router.patch('/:id', function(req,res,next){
                 obj: result
             })
         });
+    })
+})
+router.patch('/subscribedhubs/:id',function(req, res, next) {
+    var decoded = token.decode(req.query.token);
+    User.findById(req.params.id, function(err, doc){
+        if(err){
+            return res.status(404).json({
+                title: 'We are sorry!',
+                error: err
+            });
+        }
+        if(!doc) {
+            return res.status(404).json({
+                title: 'We are sorry!',
+                error: err
+            });
+        }
+        // if(decoded.user._id != doc.owner){
+        //     return res.status(401).json({
+        //         title: 'We are sorry!',
+        //         error: err
+        //     });
+        // }
+        let hub = new Hub();
+        hub._id = req.body._id;
+        hub.description = req.body.description;
+        hub.title = req.body.title;
+        hub.owner = {
+            _id: req.body.owner._id,
+            username: req.body.owner.username
+        };
+
+        Hub.findById(req.body._id, function(err, subscribedHub) {
+            doc.subscribedHubs.push(subscribedHub);
+            doc.save();
+
+            res.status(201).json({
+                message: 'You have successfully subscribed!',
+                obj: hub
+            });
+        })
     })
 })
 module.exports = router;

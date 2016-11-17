@@ -24,11 +24,12 @@ export class HubService {
 
     hub: Hub = null;
     
-    addHub (hub) {
+    addHub(hub: Hub) {
         var body = JSON.stringify(hub);
         var headers = new Headers({ 'Content-Type': 'application/json' });
         var token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
-        return this.http.post('http://localhost:3000/hub' + token, body, { headers: headers })
+
+        return this.http.post('http://localhost:3000/hub/ownedhubs' + token, body, { headers: headers })
             .map(function (response) {
             var data = response.json().obj;
 
@@ -51,6 +52,7 @@ export class HubService {
             return Observable.throw(error); 
         });
     }
+
     addHubMessage(hubMessage) {
         var body = JSON.stringify(hubMessage);
         var headers = new Headers({ 'Content-Type': 'application/json' });
@@ -70,6 +72,18 @@ export class HubService {
             .map(function (response) { return response.json(); })
             .catch(function (error) { return Observable.throw(error.json()); });
     }
+    subscribeToHub(hub: Hub) {
+        let user = this.authService.getCurrUser();
+        var body = JSON.stringify(hub);
+        console.log(JSON.parse(body));
+        var headers = new Headers({ 'Content-Type': 'application/json' });
+        var token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
+        return this.http.patch('http://localhost:3000/hub/subscribedhubs/' + user._id + token, body, { headers: headers })
+            .map(function (response) {
+                return response.json(); 
+            })
+            .catch(function (error) { return Observable.throw(error.json()); });
+    }
     getHubs() {
         return this.http.get('http://localhost:3000/hub')
             .map(function (response) {
@@ -86,7 +100,8 @@ export class HubService {
                         username: data[i].owner.username, 
                     } 
                 );
-                if((user && user.username !== data[i].owner.username))
+                let index = user.subscribedHubs.indexOf(hub);
+                if((user && user.username !== data[i].owner.username && index < 0))
                     objs.push(hub);
             }
             return objs;
@@ -116,8 +131,6 @@ export class HubService {
     deleteHub(hub: Hub) {
         var token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
         this.hubs.splice(this.hubs.indexOf(hub), 1);
-        console.log(this.hubs);
-        console.log(hub);
 
         this.currentlyDisplayedHubs.emit(this.hubs);
         
@@ -128,26 +141,6 @@ export class HubService {
         return this.http.delete('http://localhost:3000/hub/' + hub._id + token)
             .map(function (response) { return user; })
             .catch(function (error) { return Observable.throw(error.json()); });
-    }
-    getUserCreatedHubs(username: string) {
-        // var token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
-        return this.http.get('http://localhost:3000/hub/ownedhubs/' + username)
-            .map(function (response) {
-            var data = response.json().obj;
-            var objs = [];
-            
-            for (var i = 0; i < data.length; i++) {
-                var message = new Hub(
-                    data[i].title,
-                    data[i].description
-                );
-                objs.push(message);
-            }
-            this.hubs = objs;
-
-            return objs;
-        })
-        .catch(function (error) { return Observable.throw(error.json()); });
     }
     getHub() {
         return this.hub;

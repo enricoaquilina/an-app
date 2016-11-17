@@ -4,6 +4,7 @@ import {UserService} from '../../user.service';
 import {ErrorService} from '../../../errors/error.service';
 import {Router} from '@angular/router';
 import {AuthService} from '../../auth.service';
+import {HubService} from '../../../hubs/hub.service';
 import {Hub} from '../../../hubs/hub';
 
 @Component({
@@ -15,12 +16,23 @@ export class UserSubbedHubsComponent implements OnInit{
         private errorService: ErrorService,
         private userService: UserService,
         private router: Router,
-        private authService: AuthService
+        private authService: AuthService,
+        private hubService: HubService
     ) { }
-    userSubbedHubs: Hub[];
+
+    userSubscribedHubs: Hub[];
+    user: User;
 
     ngOnInit() {
-      this.userSubbedHubs = this.authService.getCurrUser().subbedHubs;
+        this.authService.hasSignedIn.subscribe(user => {
+            this.user = user;
+            this.userSubscribedHubs = this.user ? this.user.subscribedHubs: [];
+            this.hubService.setCurrentlyDisplayedHubs(this.userSubscribedHubs);
+        })
+        if(!this.user) {
+            this.userSubscribedHubs = this.authService.getCurrUser().subscribedHubs;
+            this.hubService.setCurrentlyDisplayedHubs(this.userSubscribedHubs);
+        }
     }
     searchUser(){
         

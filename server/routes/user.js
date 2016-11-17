@@ -37,6 +37,14 @@ router.post('/signin', function(req,res,next){
                 select: 'username email firstName lastName'
             }
         })
+        .populate({
+            path: 'subscribedHubs', 
+            select: 'title description owner',
+            populate: {
+                path:'owner',
+                select: 'username email firstName lastName'
+            }
+        })
         .exec(function(err, doc) {
             if(err){
                 return res.status(404).json({

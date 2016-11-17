@@ -42,6 +42,15 @@ export class HubComponent{
     }
     subscribeHub(){
         //TODO
+        this.hubService.subscribeToHub(this.hub)
+            .subscribe(
+                data => {
+                    let user = this.authService.getCurrUser();
+                    user.subscribedHubs.push(data.obj);
+                    this.authService.setCurrUser(user);
+                },
+                error => this.errorService.handleError(error)
+            )
     }
     isOwner(){
         return this.authService.isHubOwner(this.hub);

@@ -1,4 +1,4 @@
 <section class="col-ld-8 col-md-offset-2">
-    <h3>My Hubs</h3>
-    <hub-area *ngFor="let hub of userHubs" [hub]="hub" (editClicked)="message.content=$event"></hub-area> 
+    <h3>Subscriptions</h3>
+    <hub-area *ngFor="let hub of userSubscribedHubs" [hub]="hub" (editClicked)="message.content=$event"></hub-area> 
 </section>

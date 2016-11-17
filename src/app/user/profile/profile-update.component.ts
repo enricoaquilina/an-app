@@ -56,8 +56,7 @@ export class ProfileUpdateComponent implements OnInit {
         this.userService.updateUser(this.user)
             .subscribe( 
                 data => {
-                    this.authService.hasSignedIn.emit(data.obj);
-                    localStorage.setItem('user', JSON.stringify(data.obj));
+                    this.authService.setCurrUser(data.obj)
                     this.router.navigate(['/']);
                 }, 
                 error => { 

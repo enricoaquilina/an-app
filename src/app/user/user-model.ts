@@ -7,7 +7,7 @@ export class User{
         public email?: string,
         public _id?: string, 
         public ownedHubs?: Hub[],
-        public subbedHubs?: Hub[],
+        public subscribedHubs?: Hub[],
         public firstName?: string,
         public lastName?: string,
         public isAdmin?: boolean,
