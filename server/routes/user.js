@@ -6,7 +6,6 @@ var token = require('jsonwebtoken');
 
 var User = require('../models/user');
 
-
 router.post('/create', function(req, res, next){
     var user = new User({
         username: req.body.username,
@@ -250,5 +249,5 @@ router.delete('/:username', function(req, res, next){
             })
         });
     });
-});
+})
 module.exports = router;

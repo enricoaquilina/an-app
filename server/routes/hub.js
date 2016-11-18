@@ -174,13 +174,32 @@ router.patch('/subscribedhubs/:id',function(req, res, next) {
         };
 
         Hub.findById(req.body._id, function(err, subscribedHub) {
-            doc.subscribedHubs.push(subscribedHub);
-            doc.save();
+            if(err) {
+                return res.status(404).json({
+                    title: 'We are sorry!',
+                    error: err
+                });
+            }
+            let exists = doc.subscribedHubs.indexOf(subscribedHub._id);
+            
+            if(exists == -1) {
+                doc.subscribedHubs.push(subscribedHub);
+                doc.save();
 
-            res.status(201).json({
-                message: 'You have successfully subscribed!',
-                obj: hub
-            });
+                res.status(201).json({
+                    message: 'You have successfully subscribed!',
+                    obj: hub
+                });
+            }else if( exists == 0){
+                console.log('here');
+                doc.subscribedHubs.splice(doc.subscribedHubs.indexOf(subscribedHub), 1);
+                console.log(doc);                
+                doc.save();
+                res.status(201).json({
+                    message: 'You have successfully unsubscribed!',
+                    obj: doc
+                });
+            }
         })
     })
 })

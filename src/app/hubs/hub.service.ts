@@ -75,7 +75,17 @@ export class HubService {
     subscribeToHub(hub: Hub) {
         let user = this.authService.getCurrUser();
         var body = JSON.stringify(hub);
-        console.log(JSON.parse(body));
+        var headers = new Headers({ 'Content-Type': 'application/json' });
+        var token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
+        return this.http.patch('http://localhost:3000/hub/subscribedhubs/' + user._id + token, body, { headers: headers })
+            .map(function (response) {
+                return response.json(); 
+            })
+            .catch(function (error) { return Observable.throw(error.json()); });
+    }
+    unsubscribeToHub(hub: Hub) {
+        let user = this.authService.getCurrUser();
+        var body = JSON.stringify(hub);
         var headers = new Headers({ 'Content-Type': 'application/json' });
         var token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
         return this.http.patch('http://localhost:3000/hub/subscribedhubs/' + user._id + token, body, { headers: headers })

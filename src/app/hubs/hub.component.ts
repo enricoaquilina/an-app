@@ -27,7 +27,7 @@ export class HubComponent{
     editHub() {
         this.hubService.editHub(this.hub);
     }
-    deleteHub(){
+    deleteHub() {
         this.hubService.deleteHub(this.hub)
             .subscribe(
                 data => {
@@ -36,26 +36,40 @@ export class HubComponent{
                 error => this.errorService.handleError(error)
             );
     }
-    viewHub(){
+    viewHub() {
         this.router.navigate(['/h', this.hub.title]);
         this.hubService.setHub(this.hub);
     }
-    subscribeHub(){
-        //TODO
+    subscribeHub() {
+        //TOFIX
         this.hubService.subscribeToHub(this.hub)
             .subscribe(
                 data => {
                     let user = this.authService.getCurrUser();
-                    user.subscribedHubs.push(data.obj);
+                    user.subscribedHubs.push(this.hub);
                     this.authService.setCurrUser(user);
                 },
-                error => this.errorService.handleError(error)
-            )
+                error => this.errorService.handleError(error))
     }
-    isOwner(){
+    unsubscribeHub() {
+        this.hubService.unsubscribeToHub(this.hub)
+            .subscribe(
+                data => {
+                    let user = this.authService.getCurrUser();
+                    user.subscribedHubs.splice(user.subscribedHubs.indexOf(this.hub), 1);
+                    this.authService.setCurrUser(user);
+                },
+                error => this.errorService.handleError(error))
+    }
+    isSubscribed() {
+        let user = this.authService.getCurrUser();                        
+        let index = user.subscribedHubs.indexOf(this.hub);;
+        return this.authService.isSubscribed(this.hub);
+    }
+    isOwner() {
         return this.authService.isHubOwner(this.hub);
     }
-    isLoggedIn(){
+    isLoggedIn() {
         return this.authService.isLoggedIn();
     }
 }
