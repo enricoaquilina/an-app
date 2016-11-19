@@ -23,7 +23,7 @@ export class HubListComponent implements OnInit{
             .subscribe(
                 data => {
                     this.hubs = data;
-                    // this.hubService.setCurrentlyDisplayedHubs(data);
+                    this.hubService.setCurrentlyDisplayedHubs(data);
                 },
                 error => this.errorService.handleError(error)
             );

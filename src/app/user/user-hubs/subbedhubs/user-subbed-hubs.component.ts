@@ -27,11 +27,11 @@ export class UserSubbedHubsComponent implements OnInit{
         this.authService.hasSignedIn.subscribe(user => {
             this.user = user;
             this.userSubscribedHubs = this.user ? this.user.subscribedHubs: [];
-            this.hubService.setCurrentlyDisplayedHubs(this.userSubscribedHubs);
+            // this.hubService.setCurrentlyDisplayedHubs(this.userSubscribedHubs);
         })
         if(!this.user) {
             this.userSubscribedHubs = this.authService.getCurrUser().subscribedHubs;
-            this.hubService.setCurrentlyDisplayedHubs(this.userSubscribedHubs);
+            // this.hubService.setCurrentlyDisplayedHubs(this.userSubscribedHubs);
         }
     }
     searchUser(){

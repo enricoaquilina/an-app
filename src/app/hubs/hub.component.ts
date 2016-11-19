@@ -48,6 +48,10 @@ export class HubComponent{
                     let user = this.authService.getCurrUser();
                     user.subscribedHubs.push(this.hub);
                     this.authService.setCurrUser(user);
+                    
+                    let hubs = this.hubService.getCurrentlyDisplayedHubs();
+                    hubs.splice(hubs.indexOf(this.hub), 1);
+                    this.hubService.setCurrentlyDisplayedHubs(hubs);
                 },
                 error => this.errorService.handleError(error))
     }
@@ -58,6 +62,10 @@ export class HubComponent{
                     let user = this.authService.getCurrUser();
                     user.subscribedHubs.splice(user.subscribedHubs.indexOf(this.hub), 1);
                     this.authService.setCurrUser(user);
+                    
+                    let hubs = this.hubService.getCurrentlyDisplayedHubs();
+                    hubs.push(this.hub);
+                    this.hubService.setCurrentlyDisplayedHubs(hubs);
                 },
                 error => this.errorService.handleError(error))
     }

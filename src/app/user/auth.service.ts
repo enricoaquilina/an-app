@@ -69,10 +69,8 @@ export class AuthService{
                    .catch(error => Observable.throw(error.json()));    
     }
     isSubscribed(hub: Hub) {
-        let index = this.user.subscribedHubs.indexOf(hub);
-        console.log(index);
-        this.user.subscribedHubs.forEach(h => console.log(h._id === hub._id));
-        return index !== -1;
+        let index = this.user.subscribedHubs.findIndex(h => h._id === hub._id);
+        return index !== -1 ? true : false;
     }
     isLoggedIn(){
         return localStorage.getItem('token') !== null;

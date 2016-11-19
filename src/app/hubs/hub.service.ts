@@ -101,15 +101,19 @@ export class HubService {
             let user = JSON.parse(localStorage.getItem('user')) ? JSON.parse(localStorage.getItem('user')) : null;
             var objs = [];
             for (var i = 0; i < data.length; i++) {
-                var hub = new Hub(
-                    data[i].title, 
-                    data[i].description, 
-                    data[i]._id,
+                let hub = {
+                    title: data[i].title, 
+                    description: data[i].description,
+                    owner:
                     {
-                        _id: data[i].owner._id,
                         username: data[i].owner.username, 
-                    } 
-                );
+                        email: data[i].owner.email,
+                        firstName: data[i].owner.firstName,
+                        lastName: data[i].owner.lastName,
+                        _id: data[i].owner._id,
+                    }, 
+                    _id: data[i]._id,
+                }
                 let index = user.subscribedHubs.indexOf(hub);
                 if((user && user.username !== data[i].owner.username && index < 0))
                     objs.push(hub);
@@ -160,9 +164,10 @@ export class HubService {
     }   
     setCurrentlyDisplayedHubs(hubs: Hub[]) {
         this.hubs = hubs;
+        this.currentlyDisplayedHubs.emit(hubs);
     }
     getCurrentlyDisplayedHubs() {
-        return this.currentlyDisplayedHubs;
+        return this.hubs;
     }
 
 }

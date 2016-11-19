@@ -9,7 +9,7 @@ var HubMessage = require('../models/hubmessage');
 //get all hubs
 router.get('/', function(req, res, next){
     Hub.find()
-        .populate('owner', 'username email')
+        .populate('owner', 'username email firstName lastName')
         .exec(function(err, docs){
             if(err){
                 return res.status(404).json({
@@ -190,7 +190,7 @@ router.patch('/subscribedhubs/:id',function(req, res, next) {
                     message: 'You have successfully subscribed!',
                     obj: hub
                 });
-            }else if( exists == 0){
+            }else if(exists == 0){
                 console.log('here');
                 doc.subscribedHubs.splice(doc.subscribedHubs.indexOf(subscribedHub), 1);
                 console.log(doc);                

@@ -30,6 +30,7 @@ export class SigninComponent implements OnInit{
                 data => {
                     let user = JSON.parse(data.obj);
    	                this.authService.setCurrUser(user);
+                    console.log(user);
                     this.authService.hasSignedIn.emit(user);
 
                     localStorage.setItem('token', data.token);
