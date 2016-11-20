@@ -4,6 +4,7 @@ import {AuthService} from '../auth.service';
 import {AppValidators} from '../../validators';
 import {Component, OnInit} from '@angular/core';
 import {ErrorService} from '../../errors/error.service';
+import {HubService} from '../../hubs/hub.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
@@ -18,16 +19,18 @@ export class SigninComponent implements OnInit{
         private fb: FormBuilder, 
         private authService: AuthService,
         private router: Router,
+        private hubService: HubService,
         private errorService: ErrorService
     ) { }
 
     onSubmit(){
         var user = new User(this.myForm.value.username.toLowerCase().trim(), this.myForm.value.password);
-        this.myForm.reset();
+        this.myForm.patchValue({password: ''})
   
         this.authService.signInUser(user)
             .subscribe(
                 data => {
+                    this.hubService.setCurrentlyDisplayedHubs([]);
                     let user = JSON.parse(data.obj);
    	                this.authService.setCurrUser(user);
                     this.authService.hasSignedIn.emit(user);

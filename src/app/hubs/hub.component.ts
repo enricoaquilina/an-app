@@ -70,8 +70,8 @@ export class HubComponent{
                 error => this.errorService.handleError(error))
     }
     isSubscribed() {
-        let user = this.authService.getCurrUser();                        
-        let index = user.subscribedHubs.indexOf(this.hub);;
+        // let user = this.authService.getCurrUser();                        
+        // let index = user ? user.subscribedHubs.indexOf(this.hub) : false;
         return this.authService.isSubscribed(this.hub);
     }
     isOwner() {

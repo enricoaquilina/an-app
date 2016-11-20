@@ -69,7 +69,7 @@ export class AuthService{
                    .catch(error => Observable.throw(error.json()));    
     }
     isSubscribed(hub: Hub) {
-        let index = this.user.subscribedHubs.findIndex(h => h._id === hub._id);
+        let index = this.user ? this.user.subscribedHubs.findIndex(h => h._id === hub._id) : -1;
         return index !== -1 ? true : false;
     }
     isLoggedIn(){
@@ -79,8 +79,7 @@ export class AuthService{
         return this.user? this.user.isAdmin: false;
     }
     isHubOwner(hub: Hub) {   
-        let test = hub.owner.username === JSON.parse(localStorage.getItem('user')).username;
-        return test;
+        return this.user && hub.owner.username === this.user.username ? true : false;
     }
     isOwner(userId: string){
         return JSON.parse(localStorage.getItem('user')) ? JSON.parse(localStorage.getItem('user'))._id == userId: false;

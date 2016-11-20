@@ -17,6 +17,7 @@ export class LogoutComponent {
     onLogout(){
         this.authService.logout();
         this.hubService.setHub(null);
+        this.hubService.setCurrentlyDisplayedHubs([]);
         this.userService.setUser(null);
         this.router.navigate(['signin']);
     }

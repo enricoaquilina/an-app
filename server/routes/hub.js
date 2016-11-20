@@ -210,18 +210,17 @@ router.patch('/subscribedhubs/:id',function(req, res, next) {
                     error: err
                 });
             }
-            let exists = doc.subscribedHubs.indexOf(subscribedHub._id);
-            
-            if(exists == -1) {
+            let hubIndex = doc.subscribedHubs.indexOf(subscribedHub._id);
+            if(hubIndex == -1) {
                 doc.subscribedHubs.push(subscribedHub);
                 doc.save();
 
-                res.status(201).json({
+                res.status(201).json({            
                     message: 'You have successfully subscribed!',
                     obj: hub
                 });
-            }else if(exists == 0){
-                doc.subscribedHubs.splice(doc.subscribedHubs.indexOf(subscribedHub), 1);
+            }else if(hubIndex > -1){
+                doc.subscribedHubs.splice(hubIndex, 1);
                 doc.save();
                 res.status(201).json({
                     message: 'You have successfully unsubscribed!',

@@ -22,7 +22,7 @@ export class HubListComponent implements OnInit{
             this.hubs = hubs;
         })
         let hubs = this.hubService.getCurrentlyDisplayedHubs();
-
+        
         if(hubs && hubs.length > 0){
             this.hubs = hubs;
         }else {

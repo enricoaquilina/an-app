@@ -115,7 +115,7 @@ export class HubService {
                         _id: data[i].owner._id,
                     }, 
                     _id: data[i]._id,
-                }
+                };
                 objs.push(hub);
             }
             return objs;
