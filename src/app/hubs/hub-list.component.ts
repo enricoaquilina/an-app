@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Hub} from './hub';
 import {HubService} from './hub.service';
+import {AuthService} from '../user/auth.service';
 import {ErrorService} from '../errors/error.service';
 
 @Component({
@@ -12,6 +13,7 @@ export class HubListComponent implements OnInit{
 
     constructor(
         private hubService: HubService,
+        private authService: AuthService,
         private errorService: ErrorService
     ) { }
 
@@ -19,13 +21,20 @@ export class HubListComponent implements OnInit{
         this.hubService.currentlyDisplayedHubs.subscribe(hubs => {
             this.hubs = hubs;
         })
-        this.hubService.getHubs()
-            .subscribe(
-                data => {
-                    this.hubs = data;
-                    this.hubService.setCurrentlyDisplayedHubs(data);
-                },
-                error => this.errorService.handleError(error)
-            );
+        let hubs = this.hubService.getCurrentlyDisplayedHubs();
+
+        if(hubs && hubs.length > 0){
+            this.hubs = hubs;
+        }else {
+             this.hubService.getHubs()
+                .subscribe(
+                    data => {
+                        this.hubs = data;
+                        this.hubService.setCurrentlyDisplayedHubs(data);
+                    },
+                    error => this.errorService.handleError(error)
+                );
+        }
+       
     }
 }

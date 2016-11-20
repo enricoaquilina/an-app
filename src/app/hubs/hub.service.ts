@@ -95,7 +95,9 @@ export class HubService {
             .catch(function (error) { return Observable.throw(error.json()); });
     }
     getHubs() {
-        return this.http.get('http://localhost:3000/hub')
+        var token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
+
+        return this.http.get('http://localhost:3000/hub' + token)
             .map(function (response) {
             var data = response.json().obj;
             let user = JSON.parse(localStorage.getItem('user')) ? JSON.parse(localStorage.getItem('user')) : null;
@@ -114,9 +116,7 @@ export class HubService {
                     }, 
                     _id: data[i]._id,
                 }
-                let index = user.subscribedHubs.indexOf(hub);
-                if((user && user.username !== data[i].owner.username && index < 0))
-                    objs.push(hub);
+                objs.push(hub);
             }
             return objs;
         })

@@ -27,12 +27,10 @@ export class UserOwnedHubsComponent implements OnInit{
         this.authService.hasSignedIn.subscribe(user => {
             this.user = user;
             this.userOwnedHubs = this.user ? this.user.ownedHubs: [];
-            this.hubService.setCurrentlyDisplayedHubs(this.userOwnedHubs);
             
         })
         if(!this.user) {
             this.userOwnedHubs = this.authService.getCurrUser().ownedHubs;
-            this.hubService.setCurrentlyDisplayedHubs(this.userOwnedHubs);
         }
     }
     searchUser(){

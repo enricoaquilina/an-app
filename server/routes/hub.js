@@ -8,19 +8,49 @@ var HubMessage = require('../models/hubmessage');
 
 //get all hubs
 router.get('/', function(req, res, next){
+    var decoded = token.decode(req.query.token);    
+    
     Hub.find()
         .populate('owner', 'username email firstName lastName')
-        .exec(function(err, docs){
-            if(err){
+        .exec(function(err, docs) {
+            if(err) {
                 return res.status(404).json({
                     title: 'We are sorry!',
                     error: err
                 })
             }
-            res.status(200).json({
-                message: 'success',
-                obj: docs
-            });
+            if(decoded && decoded.user._id) {
+                User.findOne({_id: decoded.user._id}, function(err, doc){
+                    if(err){
+                        return res.status(404).json({
+                            title: 'We are sorry!',
+                            error: err
+                        })
+                    }
+                    //filtering out the 'unnecessary' hubs
+                    let subscribedHubs = doc.subscribedHubs;
+                    subscribedHubs.forEach(function(hub) {
+                        let hubIndex = docs.findIndex(h => h._id == hub.toString());
+                        hubIndex > -1 ? docs.splice(hubIndex, 1) : docs;
+                    }) 
+                    let ownedHubs = doc.ownedHubs;
+                    ownedHubs.forEach(function(hub) {
+                        let hubIndex = docs.findIndex(h => h._id == hub.toString());
+                        hubIndex > -1 ? docs.splice(hubIndex, 1) : docs;
+                    })  
+
+                    return res.status(200).json({
+                        message: 'success',
+                        obj: docs
+                    });
+
+                })
+            }else{
+                res.status(200).json({
+                    message: 'success',
+                    obj: docs
+                });
+            }
         })
 })
 // router.use('/', function(req, res, next){
@@ -191,9 +221,7 @@ router.patch('/subscribedhubs/:id',function(req, res, next) {
                     obj: hub
                 });
             }else if(exists == 0){
-                console.log('here');
                 doc.subscribedHubs.splice(doc.subscribedHubs.indexOf(subscribedHub), 1);
-                console.log(doc);                
                 doc.save();
                 res.status(201).json({
                     message: 'You have successfully unsubscribed!',

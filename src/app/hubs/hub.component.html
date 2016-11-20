@@ -12,7 +12,7 @@
         <div class="config pull-right">
             <button type="button" (click)="viewHub()" class="btn btn-primary">View</button> 
         </div>
-        <div *ngIf="!isSubscribed()">
+        <div *ngIf="!isOwner() && !isSubscribed()">
             <a (click)="subscribeHub()">Subscribe!</a>
         </div>
         <div *ngIf="isLoggedIn() && !isOwner() && isSubscribed()">

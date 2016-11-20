@@ -22,7 +22,7 @@ export class SigninComponent implements OnInit{
     ) { }
 
     onSubmit(){
-        var user = new User(this.myForm.value.username.toLowerCase(), this.myForm.value.password);
+        var user = new User(this.myForm.value.username.toLowerCase().trim(), this.myForm.value.password);
         this.myForm.reset();
   
         this.authService.signInUser(user)
@@ -30,7 +30,6 @@ export class SigninComponent implements OnInit{
                 data => {
                     let user = JSON.parse(data.obj);
    	                this.authService.setCurrUser(user);
-                    console.log(user);
                     this.authService.hasSignedIn.emit(user);
 
                     localStorage.setItem('token', data.token);

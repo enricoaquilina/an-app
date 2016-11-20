@@ -39,6 +39,7 @@ export class HubFormComponent implements OnInit{
     }
     ngOnInit(){
         const logged: boolean = this.isLoggedIn();
+        console.log(this.hubService.getCurrentlyDisplayedHubs());
         if(!logged){
             this.router.navigate(['/']);
         }
