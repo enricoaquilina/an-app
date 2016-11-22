@@ -140,7 +140,6 @@ router.get('/', function(req, res, next){
             }
             User.find({ _id : { $ne: doc._id } })
                 .exec(function(err, docs) {
-                    console.log(docs);
                     if(err){
                         return res.status(404).json({
                             title: 'An error occurred',

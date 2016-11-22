@@ -25,9 +25,10 @@ export class UserService {
             var objs = [];
             for (var i = 0; i < data.length; i++) {
                 var user = new User(
-                        data[i].username,'',data[i].email, 
-                        data[i].firstName, data[i].lastName,
-                        data[i].isAdmin, data[i]._id);
+                        data[i].username,null,data[i].email, 
+                        data[i]._id, data[i].ownedHubs,
+                        data[i].subscribedHubs, data[i].firstName,
+                        data[i].lastName, data[i].isAdmin);
                 objs.push(user);
             }
             return objs;
