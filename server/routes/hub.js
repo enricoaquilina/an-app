@@ -123,17 +123,40 @@ router.delete('/:id', function(req, res, next) {
             });
         }
         //before removing, make sure to remove from users' subscribed hubs
-        doc.remove(function(err, doc) {
-            if(err) {
+        User.findById(decoded.user._id, function(err, owner){
+            if(err){
                 return res.status(404).json({
                     title: 'We are sorry!',
                     error: err
-                })
+                });
             }
-            res.status(200).json({
-                title: 'Document has been removed'
+            //remove from owner's owned hubs
+            let hubIndex = owner.ownedHubs.findIndex(h => h == doc._id.toString());
+            hubIndex > -1 ? owner.ownedHubs.splice(hubIndex, 1) : owner;
+            owner.save();
+
+            //remove from users' subbed hubs
+            User.find({subscribedHubs: {
+                _id: doc._id
+            }}, function(err, subscribedUsers) {
+                subscribedUsers.forEach(u => {
+                    let hubIndex = u.subscribedHubs.findIndex(h => h == doc.id.toString());
+                    u.subscribedHubs.splice(hubIndex, 1);              
+                    u.save();
+                })
             })
-        });
+            doc.remove(function(err, doc) {
+                if(err) {
+                    return res.status(404).json({
+                        title: 'We are sorry!',
+                        error: err
+                    })
+                }
+                res.status(200).json({
+                    title: 'Document has been removed'
+                })
+            });
+        })
     });
 });
 router.patch('/:id',function(req,res,next){
@@ -151,7 +174,7 @@ router.patch('/:id',function(req,res,next){
                 error: err
             });
         }
-        if(decoded.user._id != doc.owner){
+        if(decoded.user._id != doc.owner) {
             return res.status(401).json({
                 title: 'We are sorry!',
                 error: err
@@ -159,8 +182,8 @@ router.patch('/:id',function(req,res,next){
         }
         doc.title = req.body.title;
         doc.description = req.body.description;
-        doc.save(function(err, result){
-            if(err){
+        doc.save(function(err, result) {
+            if(err) {
                 return res.status(404).json({
                     title: 'We are sorry!',
                     error: err

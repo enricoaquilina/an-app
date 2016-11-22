@@ -47,7 +47,8 @@ export class HubUpdateComponent implements OnInit{
         this.hubService.updateHub(this.hub)
             .subscribe( 
                 data => {
-                    this.router.navigate(['/']);
+                    let user = this.authService.getCurrUser();
+                    this.router.navigate(['/ownedhubs/' + user.username]);
                 }, 
                 error => { 
                     return this.errorService.handleError(error); 

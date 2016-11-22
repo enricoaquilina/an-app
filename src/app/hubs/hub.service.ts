@@ -144,13 +144,9 @@ export class HubService {
     }
     deleteHub(hub: Hub) {
         var token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
-        this.hubs.splice(this.hubs.indexOf(hub), 1);
-
-        this.currentlyDisplayedHubs.emit(this.hubs);
-        
-        let user = JSON.parse(localStorage.getItem('user'));
-        user.ownedHubs = this.hubs;
-        localStorage.setItem('user', JSON.stringify(user));
+        let user = this.authService.getCurrUser();
+        let hubIndex = user.ownedHubs.findIndex(h => h._id == hub._id.toString());
+        hubIndex > -1 ? user.ownedHubs.splice(hubIndex, 1) : user; 
 
         return this.http.delete('http://localhost:3000/hub/' + hub._id + token)
             .map(function (response) { return user; })
