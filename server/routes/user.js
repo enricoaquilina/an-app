@@ -12,19 +12,37 @@ router.post('/create', function(req, res, next){
         email: req.body.email,
         password: passwordHash.generate(req.body.password)
     });
-
-    user.save(function(err, result){
+    User.findOne({username: user.username}, function(err, doc) {
         if(err){
             return res.status(404).json({
                 title: 'An error occurred',
                 error: err
             });
         }
-        res.status(201).json({
-            message: 'The user has been saved',
-            obj: result
-        });
+        if(doc){
+            return res.status(403).json({
+                title: 'We are sorry!',
+                error: {
+                    message: 'There already exists a user with the same username!'
+                }
+            });
+        }
+        if(!doc){
+            user.save(function(err, result){
+                if(err){
+                    return res.status(404).json({
+                        title: 'An error occurred',
+                        error: err
+                    });
+                }
+                res.status(201).json({
+                    message: 'The user has been saved',
+                    obj: result
+                });
+            })
+        }
     })
+   
 })
 router.post('/signin', function(req,res,next){
     User.findOne({username: req.body.username})
@@ -177,44 +195,62 @@ router.get('/:username', function(req, res, next){
 })
 router.patch('/:id', function(req, res, next){
     var decoded = token.decode(req.query.token);
-        User.findById(req.params.id, function(err, doc){
-            if(err) {
-                return res.status(404).json({
-                    title: 'We are sorry!',
-                    error: err
-                });
-            }
-            if(!doc) {
-                return res.status(404).json({
-                    title: 'The user was not found!',
-                    error: err
-                });
-            }
-            if(decoded.user._id != doc._id && !decoded.user.isAdmin){
-                return res.status(401).json({
-                    title: 'Not authorized',
-                    error: { message: 'You are not authorized to access this page!' }
-                });
-            }
-            doc.username = req.body.username;
-            doc.email = req.body.email;
-            doc.firstName = req.body.firstName;
-            doc.lastName = req.body.lastName;
-            doc.isAdmin = req.body.isAdmin;
-
-            doc.save(function(err, doc){
-                if(err){
+    User.findOne({username: req.body.username}, function(err, doc){
+        if(err) {
+            return res.status(404).json({
+                title: 'We are sorry!',
+                error: err
+            });
+        }
+        if(doc) {
+            return res.status(404).json({
+                title: 'We are sorry!',
+                error: {
+                    message: 'There is already a user with the same username!'
+                }
+            });
+        }
+        if(!doc){
+            User.findById(req.params.id, function(err, doc){
+                if(err) {
                     return res.status(404).json({
                         title: 'We are sorry!',
                         error: err
                     });
                 }
-                res.status(200).json({
-                    message: 'User saved successfully',
-                    obj: doc
+                if(!doc) {
+                    return res.status(404).json({
+                        title: 'The user was not found!',
+                        error: err
+                    });
+                }
+                if(decoded.user._id != doc._id && !decoded.user.isAdmin){
+                    return res.status(401).json({
+                        title: 'Not authorized',
+                        error: { message: 'You are not authorized to access this page!' }
+                    });
+                }
+                doc.username = req.body.username;
+                doc.email = req.body.email;
+                doc.firstName = req.body.firstName;
+                doc.lastName = req.body.lastName;
+                doc.isAdmin = req.body.isAdmin;
+
+                doc.save(function(err, doc){
+                    if(err){
+                        return res.status(404).json({
+                            title: 'We are sorry!',
+                            error: err
+                        });
+                    }
+                    res.status(200).json({
+                        message: 'User saved successfully',
+                        obj: doc
+                    })
                 })
             })
-    });
+        }
+    })
 })
 router.delete('/:username', function(req, res, next){
     var decoded = token.decode(req.query.token);

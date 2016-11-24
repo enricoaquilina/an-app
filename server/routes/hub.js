@@ -81,8 +81,8 @@ router.post('/ownedhubs', function(req, res, next){
         });
         hub.save(function(err, result){
             if(err){
-                if(err.errmsg.startsWith('E11000')){
-                    return res.status(404).json({
+                if(err.code == 11000){
+                    return res.status(403).json({
                         title: 'We are sorry!',
                         error: { message: 'There already is a hub with the same title!' }
                     });
@@ -184,6 +184,14 @@ router.patch('/:id',function(req,res,next){
         doc.description = req.body.description;
         doc.save(function(err, result) {
             if(err) {
+                if(err.code == 11001) {
+                    return res.status(404).json({
+                        title: 'We are sorry!',
+                        error: {
+                            message: 'There already is a hub with the same title!'
+                        }
+                    });
+                }
                 return res.status(404).json({
                     title: 'We are sorry!',
                     error: err

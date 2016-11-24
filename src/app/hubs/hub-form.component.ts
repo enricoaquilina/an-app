@@ -31,7 +31,9 @@ export class HubFormComponent implements OnInit{
                     this.authService.setCurrUser(data);
                     this.router.navigate(['/ownedhubs/'+user.username]);
                 },
-                error => this.errorService.handleError(error)
+                error => {
+                    return this.errorService.handleError(error);
+                }
             );
     }
     onClick(){

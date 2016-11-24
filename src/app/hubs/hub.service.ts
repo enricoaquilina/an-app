@@ -48,9 +48,7 @@ export class HubService {
 
             return user;
         })
-        .catch(function (error) { 
-            return Observable.throw(error); 
-        });
+        .catch(function (error) { return Observable.throw(error.json()); });
     }
 
     addHubMessage(hubMessage) {

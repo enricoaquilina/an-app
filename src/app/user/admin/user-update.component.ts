@@ -6,6 +6,7 @@ import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../auth.service';
 import {AppComponent} from '../../app.component';
+import {AppValidators} from '../../validators';
 
 @Component({
     selector: 'user-update',
@@ -26,15 +27,14 @@ export class UserUpdateComponent implements OnInit {
         window.history.back();
     }
     ngOnInit() {
-        this.user = this.userService.getUser();
-
         this.form = this.fbld.group({
-            username: ['', Validators.required],
-            email: ['', Validators.required],
+            username: ['', [<any>Validators.required, <any>Validators.minLength(3)]],
+            email: ['', [<any>Validators.required, AppValidators.isEmail]],
             firstName: [''],
             lastName: [''],
             admin: ['']
         });
+        this.user = this.userService.getUser();
 
         if(!this.user && !this.authService.getCurrUser().isAdmin) {
             this.router.navigate(['/']);

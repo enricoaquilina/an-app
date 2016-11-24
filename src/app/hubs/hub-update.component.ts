@@ -42,15 +42,19 @@ export class HubUpdateComponent implements OnInit{
         return this.authService.isLoggedIn();
     };
     onSubmit(form: any) {
-        this.hub.title = form.title;
-        this.hub.description = form.description;
-        this.hubService.updateHub(this.hub)
+        let updatedHub = new Hub(form.title, form.description, this.hub._id);
+        let user = this.authService.getCurrUser();
+
+        this.hubService.updateHub(updatedHub)
             .subscribe( 
                 data => {
-                    let user = this.authService.getCurrUser();
+                    let updated = data.obj;
+                    this.hub.title = updated.title;
+                    this.hub.description = updated.description;                    
                     this.router.navigate(['/ownedhubs/' + user.username]);
                 }, 
                 error => { 
+                    this.router.navigate(['/ownedhubs/' + user.username]);
                     return this.errorService.handleError(error); 
                 }
             );
