@@ -202,15 +202,40 @@ router.patch('/:id', function(req, res, next){
                 error: err
             });
         }
-        if(doc) {
-            return res.status(404).json({
-                title: 'We are sorry!',
-                error: {
-                    message: 'There is already a user with the same username!'
+        if(doc) {      
+            console.log('here');   
+            console.log(doc._id); 
+            console.log(decoded.user._id);
+
+            if(decoded.user._id != doc._id) {
+                return res.status(404).json({
+                    title: 'We are sorry!',
+                    error: {
+                        message: 'There is already a user with the same username!'
+                    }
+                });
+            }
+            doc.username = req.body.username;
+            doc.email = req.body.email;
+            doc.firstName = req.body.firstName;
+            doc.lastName = req.body.lastName;
+            doc.isAdmin = req.body.isAdmin;
+            doc.save(function(err, doc) {
+                if(err){
+                    return res.status(404).json({
+                        title: 'We are sorry!',
+                        error: err
+                    });
                 }
-            });
+                res.status(200).json({
+                    message: 'User saved successfully',
+                    obj: doc
+                })
+            })
         }
         if(!doc){
+            console.log('here2');
+
             User.findById(req.params.id, function(err, doc){
                 if(err) {
                     return res.status(404).json({

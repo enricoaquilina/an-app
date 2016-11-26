@@ -15,6 +15,7 @@ var messageRoutes = require('./server/routes/message');
 
 var proxy = httpProxy.createProxyServer();
 var app = express();
+mongoose.Promise = global.Promise;
 //this can be changed to accomodate prod vs dev needs
 mongoose.connect('localhost:27017/an-app');
 

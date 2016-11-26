@@ -13,10 +13,10 @@
             <button type="button" (click)="viewHub()" class="btn btn-primary">View</button> 
         </div>
         <div *ngIf="isLoggedIn() && !isOwner() && !isSubscribed()">
-            <a (click)="subscribeHub()">Subscribe!</a>
+            <button type="button" (click)="subscribeHub()" class="btn btn-success">Subscribe</button> 
         </div>
         <div *ngIf="isLoggedIn() && !isOwner() && isSubscribed()">
-            <a (click)="unsubscribeHub()">Unsubscribe</a>
+            <button type="button" (click)="unsubscribeHub()" class="btn btn-warning">Unsubscribe</button> 
         </div>
         <div *ngIf="isOwner()">
             <button type="button" (click)="editHub()" class="btn btn-warning">Edit</button> 

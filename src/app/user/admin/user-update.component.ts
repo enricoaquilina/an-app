@@ -53,7 +53,10 @@ export class UserUpdateComponent implements OnInit {
                 data => {
                     this.router.navigate(['/users']);
                 }, 
-                error => this.errorService.handleError(error)
+                error => {
+                    this.router.navigate(['/users']);
+                    this.errorService.handleError(error);
+                }
             );
     };
 }
