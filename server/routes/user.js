@@ -203,10 +203,6 @@ router.patch('/:id', function(req, res, next){
             });
         }
         if(doc) {      
-            console.log('here');   
-            console.log(doc._id); 
-            console.log(decoded.user._id);
-
             if(decoded.user._id != doc._id) {
                 return res.status(404).json({
                     title: 'We are sorry!',
@@ -234,8 +230,6 @@ router.patch('/:id', function(req, res, next){
             })
         }
         if(!doc){
-            console.log('here2');
-
             User.findById(req.params.id, function(err, doc){
                 if(err) {
                     return res.status(404).json({
