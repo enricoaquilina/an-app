@@ -14,11 +14,11 @@
             <input type="text" ngControl="lastName" id="lastName" [ngModel]="user?.lastName" class="form-control" [formControl]="form.controls['lastName']" name="lastName" #input/>
 
             <label for="admin">Administrator</label>
-            <input type="checkbox" id="admin" [formControl]="form.controls['admin']" [checked]="user?.isAdmin"/>
+            <input type="checkbox" ngControl="isAdmin" id="isAdmin" [ngModel]="user?.isAdmin" class="form-control" [formControl]="form.controls['isAdmin']" />
         </div>
         <footer class="panel-footer clearfix">
             <div class="config pull-right">
-                <button type="submit" class="btn btn-primary" [disabled]="!form.valid">Save</button> 
+                <button type="submit" class="btn btn-primary" [disabled]="form.pristine || form.invalid">Save</button> 
                 <button type="button" class="btn btn-danger" (click)="goBack()">Cancel</button>
             </div>
         </footer>

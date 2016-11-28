@@ -25,7 +25,6 @@ export class SigninComponent implements OnInit{
 
     onSubmit(){
         var user = new User(this.myForm.value.username.toLowerCase().trim(), this.myForm.value.password);
-        this.myForm.patchValue({password: ''})
   
         this.authService.signInUser(user)
             .subscribe(
@@ -39,7 +38,10 @@ export class SigninComponent implements OnInit{
                     localStorage.setItem('user', data.obj);
                     this.router.navigate(['/']);
                 },
-                error => this.errorService.handleError(error)
+                error => {
+                    this.myForm.patchValue({password: ''});
+                    this.errorService.handleError(error);
+                }
             );
     }
 

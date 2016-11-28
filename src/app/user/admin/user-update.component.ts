@@ -32,7 +32,7 @@ export class UserUpdateComponent implements OnInit {
             email: ['', [<any>Validators.required, AppValidators.isEmail]],
             firstName: [''],
             lastName: [''],
-            admin: ['']
+            isAdmin: ['']
         });
         this.user = this.userService.getUser();
 
@@ -42,19 +42,29 @@ export class UserUpdateComponent implements OnInit {
         }
     };
     onSubmit(form: any) {
-        this.user.username = form.username;
-        this.user.email = form.email;
-        this.user.firstName = form.firstName;
-        this.user.lastName = form.lastName;
-        this.user.isAdmin = form.admin;
-        
-        this.userService.updateUser(this.user)
+        let newUserDetails = new User(
+            form.username,
+            form.password,
+            form.email,
+            this.user._id,
+            null,
+            null,
+            form.firstName,
+            form.lastName,
+            form.isAdmin
+        );      
+        console.log(newUserDetails);  
+        this.userService.updateUser(newUserDetails)
             .subscribe( 
                 data => {
                     this.router.navigate(['/users']);
                 }, 
                 error => {
-                    this.router.navigate(['/users']);
+                    this.form.patchValue({username: this.user.username});
+                    this.form.patchValue({email: this.user.email});
+                    this.form.patchValue({firstName: this.user.firstName});
+                    this.form.patchValue({lastName: this.user.lastName});
+                    this.form.patchValue({isAdmin: this.user.isAdmin});
                     this.errorService.handleError(error);
                 }
             );

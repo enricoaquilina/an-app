@@ -195,29 +195,47 @@ router.get('/:username', function(req, res, next){
 })
 router.patch('/:id', function(req, res, next){
     var decoded = token.decode(req.query.token);
-    User.findOne({username: req.body.username}, function(err, doc){
-        if(err) {
-            return res.status(404).json({
-                title: 'We are sorry!',
-                error: err
-            });
-        }
-        if(doc) {      
-            if(decoded.user._id != doc._id) {
+    User.findOne({username: req.body._id})
+        .populate({
+            path: 'ownedHubs', 
+            select: 'title description owner',
+            populate: {
+                path:'owner',
+                select: 'username email firstName lastName'
+            }
+        })
+        .populate({
+            path: 'subscribedHubs', 
+            select: 'title description owner',
+            populate: {
+                path:'owner',
+                select: 'username email firstName lastName'
+            }
+        })
+        .exec(function(err, doc){
+            if(err) {
+                console.log(err);
                 return res.status(404).json({
                     title: 'We are sorry!',
-                    error: {
-                        message: 'There is already a user with the same username!'
-                    }
+                    error: err
                 });
             }
+            if(doc) {      
+                if(decoded.user._id != doc._id && !decoded.user.isAdmin) {
+                    return res.status(401).json({
+                        title: 'Not authorized',
+                        error: { message: 'You are not authorized to access this page!' },
+                    });
+                }
             doc.username = req.body.username;
             doc.email = req.body.email;
             doc.firstName = req.body.firstName;
             doc.lastName = req.body.lastName;
             doc.isAdmin = req.body.isAdmin;
             doc.save(function(err, doc) {
-                if(err){
+                console.log(err);
+                if(err) {
+                    console.log(err);
                     return res.status(404).json({
                         title: 'We are sorry!',
                         error: err
@@ -231,7 +249,9 @@ router.patch('/:id', function(req, res, next){
         }
         if(!doc){
             User.findById(req.params.id, function(err, doc){
+                
                 if(err) {
+                    console.log(err);
                     return res.status(404).json({
                         title: 'We are sorry!',
                         error: err
