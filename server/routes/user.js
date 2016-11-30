@@ -214,7 +214,6 @@ router.patch('/:id', function(req, res, next){
         })
         .exec(function(err, doc){
             if(err) {
-                console.log(err);
                 return res.status(404).json({
                     title: 'We are sorry!',
                     error: err
@@ -233,9 +232,7 @@ router.patch('/:id', function(req, res, next){
             doc.lastName = req.body.lastName;
             doc.isAdmin = req.body.isAdmin;
             doc.save(function(err, doc) {
-                console.log(err);
                 if(err) {
-                    console.log(err);
                     return res.status(404).json({
                         title: 'We are sorry!',
                         error: err
@@ -247,11 +244,9 @@ router.patch('/:id', function(req, res, next){
                 })
             })
         }
-        if(!doc){
-            User.findById(req.params.id, function(err, doc){
-                
+        if(!doc) {
+            User.findById(req.params.id, function(err, doc) {
                 if(err) {
-                    console.log(err);
                     return res.status(404).json({
                         title: 'We are sorry!',
                         error: err
@@ -274,9 +269,15 @@ router.patch('/:id', function(req, res, next){
                 doc.firstName = req.body.firstName;
                 doc.lastName = req.body.lastName;
                 doc.isAdmin = req.body.isAdmin;
-
                 doc.save(function(err, doc){
-                    if(err){
+                    if(err) {
+                        //TODO appropriate error handling
+                        if(err.message == 'User validation failed') {
+                            return res.status(404).json({
+                                title: 'We are sorry!',
+                                error: {message:'There already is a user with the same details!'}
+                            });
+                        }
                         return res.status(404).json({
                             title: 'We are sorry!',
                             error: err

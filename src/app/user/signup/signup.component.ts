@@ -4,6 +4,7 @@ import {AuthService} from '../auth.service';
 import {AppValidators} from '../../validators';
 import {Component, OnInit} from '@angular/core';
 import {ErrorService} from '../../errors/error.service';
+import {UserService} from '.././user.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
@@ -20,6 +21,7 @@ export class SignupComponent implements OnInit{
     constructor(
         private errorService: ErrorService,
         private authService: AuthService,
+        private userService: UserService,
         private fbld: FormBuilder,
         private router: Router
     ) { }
@@ -42,6 +44,12 @@ export class SignupComponent implements OnInit{
             email: ['', [<any>Validators.required,AppValidators.isEmail]],
             password: ['', [<any>Validators.required, <any>Validators.minLength(8)]]
         });
+        
+        if(this.isLoggedIn()) {
+            this.router.navigate(['/']);
+            return false;
+        }
+        
     }
     isLoggedIn() {
         return this.authService.isLoggedIn();

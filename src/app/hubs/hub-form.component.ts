@@ -40,14 +40,15 @@ export class HubFormComponent implements OnInit{
         this.hub = null;
     }
     ngOnInit(){
-        const logged: boolean = this.isLoggedIn();
-        if(!logged){
-            this.router.navigate(['/']);
-        }
         this.hubForm = this.fb.group({
             title: ['', Validators.required],
             description: ['', Validators.required]
         });
+        
+        if(!this.isLoggedIn()) {
+            this.router.navigate(['/signin']);
+            return false;
+        }
     }
     isLoggedIn(){
         return this.authService.isLoggedIn();

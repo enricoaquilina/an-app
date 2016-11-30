@@ -26,7 +26,7 @@ export class UserListComponent implements OnInit{
         const isAdmin: boolean = this.authService.isAdmin();
         
         if(!isAdmin){
-            this.router.navigate(['/']);
+            this.router.navigate(['/signin']);
             return;
         }
         this.userService.getUsers()

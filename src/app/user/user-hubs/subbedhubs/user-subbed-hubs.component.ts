@@ -24,6 +24,10 @@ export class UserSubbedHubsComponent implements OnInit{
     user: User;
 
     ngOnInit() {
+        if(!this.authService.isLoggedIn()) {
+            this.router.navigate(['/signin']);
+            return false;
+        }
         this.authService.hasSignedIn.subscribe(user => {
             this.user = user;
             this.userSubscribedHubs = this.user ? this.user.subscribedHubs: [];

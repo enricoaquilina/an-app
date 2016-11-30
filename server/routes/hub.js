@@ -6,7 +6,7 @@ var Hub = require('../models/hub');
 var User = require('../models/user');
 var HubMessage = require('../models/hubmessage');
 
-//get all hubs
+//get all hubs and remove unnecesary ones if logged in
 router.get('/', function(req, res, next){
     var decoded = token.decode(req.query.token);    
     
@@ -20,7 +20,7 @@ router.get('/', function(req, res, next){
                 })
             }
             if(decoded && decoded.user._id) {
-                User.findOne({_id: decoded.user._id}, function(err, doc){
+                User.findOne({_id: decoded.user._id}, function(err, doc) {
                     if(err){
                         return res.status(404).json({
                             title: 'We are sorry!',
@@ -38,19 +38,20 @@ router.get('/', function(req, res, next){
                         let hubIndex = docs.findIndex(h => h._id == hub.toString());
                         hubIndex > -1 ? docs.splice(hubIndex, 1) : docs;
                     })  
-
                     return res.status(200).json({
                         message: 'success',
                         obj: docs
                     });
 
                 })
-            }else{
+            }
+            if(!decoded) {
                 res.status(200).json({
                     message: 'success',
                     obj: docs
                 });
             }
+            
         })
 })
 // router.use('/', function(req, res, next){

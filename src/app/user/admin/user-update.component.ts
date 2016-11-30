@@ -53,7 +53,6 @@ export class UserUpdateComponent implements OnInit {
             form.lastName,
             form.isAdmin
         );      
-        console.log(newUserDetails);  
         this.userService.updateUser(newUserDetails)
             .subscribe( 
                 data => {

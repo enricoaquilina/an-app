@@ -36,11 +36,11 @@ export class ProfileUpdateComponent implements OnInit {
             firstName: ['', <any>Validators.minLength(2)],
             lastName: ['', <any>Validators.minLength(2)],
         });
-
         this.user = this.authService.getCurrUser();
-        if(!this.user){
-            this.router.navigate(['/']);
-            return;
+
+        if(!this.authService.isLoggedIn()) {
+            this.router.navigate(['/signin']);
+            return false;
         }
 
         this.authService.hasSignedIn.subscribe(user => {
@@ -68,7 +68,7 @@ export class ProfileUpdateComponent implements OnInit {
         this.router.navigate(['ownedhubs/' + this.user.username]);
     }
     getUserSubbedHubs() {
-        //TODO
+        //TODO      
         this.router.navigate(['subscribedhubs/' + this.user.username]);
     }
 }

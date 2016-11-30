@@ -4,7 +4,7 @@ export class AppValidators {
     static points = 0;
 
     static isEmail(control: AbstractControl): {[s: string]: boolean} {
-        if (!control.value.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)){
+        if (control.value && !control.value.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)){
             return {invalidMail: true};
         }
     }
