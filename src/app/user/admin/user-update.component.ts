@@ -36,10 +36,10 @@ export class UserUpdateComponent implements OnInit {
         });
         this.user = this.userService.getUser();
 
-        if(!this.user && !this.authService.getCurrUser().isAdmin) {
-            this.router.navigate(['/']);
-            return false;
-        }
+        // if(!this.user && !this.authService.getCurrUser().isAdmin) {
+        //     this.router.navigate(['/']);
+        //     return false;
+        // }
     };
     onSubmit(form: any) {
         let newUserDetails = new User(

@@ -38,10 +38,10 @@ export class ProfileUpdateComponent implements OnInit {
         });
         this.user = this.authService.getCurrUser();
 
-        if(!this.authService.isLoggedIn()) {
-            this.router.navigate(['/signin']);
-            return false;
-        }
+        // if(!this.authService.isLoggedIn()) {
+        //     this.router.navigate(['/signin']);
+        //     return false;
+        // }
 
         this.authService.hasSignedIn.subscribe(user => {
             this.user = user;

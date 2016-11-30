@@ -44,11 +44,6 @@ export class HubFormComponent implements OnInit{
             title: ['', Validators.required],
             description: ['', Validators.required]
         });
-        
-        if(!this.isLoggedIn()) {
-            this.router.navigate(['/signin']);
-            return false;
-        }
     }
     isLoggedIn(){
         return this.authService.isLoggedIn();

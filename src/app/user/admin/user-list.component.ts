@@ -23,12 +23,12 @@ export class UserListComponent implements OnInit{
         this.userService.currentlyDisplayedUsers.subscribe(users => {
             this.users = users;
         })
-        const isAdmin: boolean = this.authService.isAdmin();
+        // const isAdmin: boolean = this.authService.isAdmin();
         
-        if(!isAdmin){
-            this.router.navigate(['/signin']);
-            return;
-        }
+        // if(!isAdmin){
+        //     this.router.navigate(['/signin']);
+        //     return;
+        // }
         this.userService.getUsers()
             .subscribe(
                 data => {

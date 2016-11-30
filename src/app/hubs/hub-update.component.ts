@@ -29,10 +29,6 @@ export class HubUpdateComponent implements OnInit{
         });
         this.hub = this.hubService.getHub() ? this.hubService.getHub() : null;
 
-        if(!this.hub) {
-            this.router.navigate(['/signin']);
-            return false;
-        }
         if( this.hub && !this.authService.isHubOwner(this.hub)) {
             this.router.navigate(['/']);
             return false;

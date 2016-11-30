@@ -15,19 +15,22 @@ import {UserListComponent} from './user/admin/user-list.component';
 import {UserOwnedHubsComponent} from './user/user-hubs/ownedhubs/user-owned-hubs.component';
 import {UserSubbedHubsComponent} from './user/user-hubs/subbedhubs/user-subbed-hubs.component';
 
+import {AuthGuard} from './guards/auth-guard';
+import {AdminGuard} from './guards/admin-guard';
+
 const APP_ROUTES: Routes = [
     {path: '', component: HubListComponent},
-    {path: 'hub/create', component: HubFormComponent},
-    {path: 'hub/update', component: HubUpdateComponent},
+    {path: 'hub/create', component: HubFormComponent, canActivate: [AuthGuard]},
+    {path: 'hub/update', component: HubUpdateComponent, canActivate: [AuthGuard]},
     {path: 'h/:title', component: HubMainComponent},
     {path: 'signup', component: SignupComponent},
     {path: 'signin', component: SigninComponent},
     {path: 'logout', component: LogoutComponent},
-    {path: 'users', component: UserListComponent},
-    {path: 'user/update', component: UserUpdateComponent},
-    {path: 'profile', component: ProfileUpdateComponent},
-    {path: 'ownedhubs/:username', component: UserOwnedHubsComponent},
-    {path: 'subscribedhubs/:username', component: UserSubbedHubsComponent}
+    {path: 'users', component: UserListComponent, canActivate: [AuthGuard, AdminGuard]},
+    {path: 'user/update', component: UserUpdateComponent, canActivate: [AuthGuard]},
+    {path: 'profile', component: ProfileUpdateComponent, canActivate: [AuthGuard]},
+    {path: 'ownedhubs/:username', component: UserOwnedHubsComponent, canActivate: [AuthGuard]},
+    {path: 'subscribedhubs/:username', component: UserSubbedHubsComponent, canActivate: [AuthGuard]}
 ];
 
 export const ROUTING = RouterModule.forRoot(APP_ROUTES);

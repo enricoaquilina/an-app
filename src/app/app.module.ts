@@ -30,6 +30,9 @@ import {UserService} from './user/user.service';
 import {ErrorService} from './errors/error.service';
 import {HubService} from './hubs/hub.service';
 
+import {AuthGuard} from './guards/auth-guard';
+import {AdminGuard} from './guards/admin-guard';
+
 @NgModule({
     imports: [
         BrowserModule, HttpModule, MaterialModule.forRoot(), 
@@ -44,8 +47,9 @@ import {HubService} from './hubs/hub.service';
         UserSubbedHubsComponent, ErrorComponent
         // FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES
     ],
-    providers: [ AuthService, UserService, HubService,
-     ErrorService, 
+    providers: [ 
+        AuthService, UserService, HubService,
+        AuthGuard, AdminGuard, ErrorService, 
     {provide: LocationStrategy, useClass: HashLocationStrategy} ],
     bootstrap: [AppComponent]
 })
